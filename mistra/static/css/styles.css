@@ -1,0 +1,238 @@
+body, html {
+    margin: 0; /* Rimuove i margini predefiniti dal body e html */
+    padding: 0; /* Rimuove il padding predefinito dal body e html */
+    font-family: 'Merriweather', serif;
+    background-color: #f8f9fa;
+}
+
+.header-top, .header-mistra {
+    background-color: #2b6ca3;
+    color: white;
+}
+
+.navbar-custom {
+    background-color: #2b6ca3;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 0 !important; /* Assicurati che la navbar non abbia un margine inferiore, forzato */
+    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
+}
+
+.navbar-custom .nav-link, .navbar-custom .navbar-brand {
+    color: white !important;
+    font-weight: bold;
+    font-size: 1.25rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
+}
+
+.navbar-custom .nav-link:hover {
+    color: #d1e7ff !important;
+}
+
+/* Stile per la voce del menu selezionata (attiva) */
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item.active .nav-link:hover {
+    background-color: #1a4f6d;
+    color: white !important;
+    border-radius: 0.25rem;
+}
+
+.navbar-custom .dropdown-menu {
+    background-color: #2b6ca3;
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.navbar-custom .dropdown-item {
+    color: white;
+}
+
+.navbar-custom .dropdown-item:hover {
+    background-color: #3a85c2;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Stili per allineare la navbar al centro */
+#navbarCMS {
+    justify-content: center !important;
+    margin-left: 0;
+}
+
+/* Stili per i dropdown al passaggio del mouse (hover) */
+@media (min-width: 992px) {
+    .navbar-custom .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .navbar-custom .nav-item.dropdown .dropdown-toggle::after {
+        display: none;
+    }
+}
+
+/* Stile per la sezione del titolo con sfondo blu scuro */
+.title-section-bg {
+    background-color: #1a4f6d; /* Colore di sfondo scuro come nell'immagine */
+    color: white; /* Testo bianco */
+    margin-top: 0 !important; /* Rimuove qualsiasi margine superiore predefinito, forzato */
+    padding-top: 1.25rem; /* Aggiunto padding per il titolo */
+    padding-bottom: 1.25rem; /* Aggiunto padding per il titolo */
+    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
+    text-align: center; /* Centra il testo all'interno della sezione */
+}
+
+/* Assicurati che l'h2 all'interno non abbia margini superiori o inferiori */
+.title-section-bg h2 {
+    margin-top: 0 !important; /* Forzato */
+    margin-bottom: 0 !important; /* Forzato */
+    width: 100%; /* Assicura che l'h2 occupi tutta la larghezza disponibile */
+    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
+    word-wrap: break-word; /* Permette alle parole lunghe di andare a capo */
+    word-break: break-word; /* Forze il taglio delle parole se necessario */
+}
+
+/* Rimuove il margine superiore dal container principale del contenuto */
+.container.mt-4 {
+    margin-top: 0 !important;
+}
+
+/*
+ * Styles for Django CMS Generated Buttons (e.g., for plugins/forms)
+ * These styles target anchor tags with Bootstrap-like button classes.
+ */
+a.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px; /* Fully rounded */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    transition: background-color 0.2s, color 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+    font-style: italic; /* Matches "Indietro" button style */
+    border: none; /* Remove default button borders */
+}
+
+a.btn-primary {
+    background-color: #003449;
+    color: #6FD299;
+}
+
+a.btn-primary:hover {
+    background-color: #1e40af;
+}
+
+a.btn-outline-success {
+    background-color: #003449;
+    color: #6FD299;
+    border: none;
+}
+
+a.btn-outline-success:hover {
+    background-color: #1e40af;
+    color: #e5e7eb;
+}
+
+a.btn-block {
+    width: 100%;
+}
+
+a.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+a.btn-md {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+a.btn-lg {
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5em auto;
+    border-radius: 0.25rem;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.875rem;
+}
+
+/* Specific styles for the content from the image */
+.content-section {
+    padding: 1.5rem; /* Add some padding around the content */
+    background-color: #fff; /* White background for the main content block */
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075); /* Subtle shadow */
+    border-radius: 0.25rem; /* Rounded corners */
+    margin-bottom: 2rem; /* Space below the content block */
+}
+
+.content-section p {
+    margin-bottom: 1rem; /* Spacing between paragraphs */
+    line-height: 1.6; /* Better readability */
+}
+
+.content-section ul {
+    list-style-type: disc; /* Default bullet points for lists */
+    padding-left: 1.5rem; /* Indent for list items */
+    margin-bottom: 1rem;
+}
+
+.content-section ul li {
+    margin-bottom: 0.5rem; /* Spacing between list items */
+    line-height: 1.6;
+}
+
+.content-section h3 {
+    color: #1a4f6d; /* Color for subheadings, matching the title section */
+    margin-top: 1.5rem; /* Space above subheadings */
+    margin-bottom: 1rem; /* Space below subheadings */
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center; /* Center the "LE TESTING WEEK..." heading */
+}
+
+.highlight-text {
+    font-weight: bold; /* Make specific text bold */
+}
+
+.important-note {
+    background-color: #e6f7ff; /* Light blue background for the note section */
+    border-left: 5px solid #2b6ca3; /* Blue border on the left */
+    padding: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.25rem;
+}
+
+.important-note p {
+    margin-bottom: 0; /* Remove extra margin for paragraphs inside the note */
+}
+
+.info-box {
+    background-color: #f0f8ff; /* Very light blue for information boxes */
+    border: 1px solid #cceeff; /* Light blue border */
+    padding: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.25rem;
+}
+.info-box p {
+    margin-bottom: 0;
+}
+
+/* Adjustments for the main content container */
+main .container {
+    padding-top: 2rem; /* Add padding to the top of the main content area */
+}

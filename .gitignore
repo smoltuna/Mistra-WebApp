@@ -1,0 +1,22 @@
+# Ignora l'ambiente virtuale
+venv/
+.venv/
+
+# Ignora i file di bytecode Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignora i file di ambiente (se li usi, ad esempio per chiavi API)
+.env
+env.py
+
+# Ignora i file specifici di IDE (es. VS Code, PyCharm)
+.vscode/
+.idea/
+
+# Ignora altri file comuni che non dovrebbero andare in Git
+*.log
+*.swp
+*.swo

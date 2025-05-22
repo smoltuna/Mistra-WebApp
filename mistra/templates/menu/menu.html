@@ -1,0 +1,56 @@
+{% load menu_tags %}
+
+{% for child in children %}
+  {% if child.children %}
+    {# Aggiunta la condizione "or child.ancestor" per colorare il genitore se una sottopagina è attiva #}
+    <li class="nav-item dropdown {% if child.selected or child.ancestor %}active{% endif %}">
+      {# data-bs-toggle="dropdown" è mantenuto per il comportamento mobile #}
+      <a class="nav-link dropdown-toggle text-white" href="{{ child.get_absolute_url }}" id="menu{{ forloop.counter }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ child.get_menu_title }}
+      </a>
+      <ul class="dropdown-menu">
+        {# Aggiunto un link per la pagina genitore all'interno del dropdown per l'accesso diretto su mobile #}
+        {# Aggiunta la classe d-lg-none per nasconderlo su schermi grandi e superiori #}
+        <li><a class="dropdown-item d-lg-none" href="{{ child.get_absolute_url }}">{{ child.get_menu_title }} (Pagina principale)</a></li>
+        {% for subchild in child.children %}
+          <li {% if subchild.selected %}class="active"{% endif %}><a class="dropdown-item" href="{{ subchild.get_absolute_url }}">{{ subchild.get_menu_title }}</a></li>
+        {% endfor %}
+      </ul>
+    </li>
+  {% else %}
+    <li class="nav-item {% if child.selected %}active{% endif %}">
+      <a class="nav-link text-white" href="{{ child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+    </li>
+  {% endif %}
+{% endfor %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleziona tutti i link che attivano un dropdown
+    const dropdownToggles = document.querySelectorAll('.navbar-custom .nav-item.dropdown > .nav-link.dropdown-toggle');
+
+    dropdownToggles.forEach(function(element) {
+        // Aggiungi un listener per l'evento 'click'
+        element.addEventListener('click', function(event) {
+            // Controlla se siamo su un dispositivo desktop (larghezza >= 992px)
+            if (window.innerWidth >= 992) {
+                // Se siamo su desktop, impedisci l'azione predefinita di Bootstrap (aprire il dropdown)
+                event.preventDefault();
+                // Naviga direttamente alla URL del link
+                window.location.href = this.href;
+            }
+            // Se siamo su mobile (larghezza < 992px), non fare nulla.
+            // Lascia che Bootstrap gestisca il click per aprire/chiudere il dropdown.
+        });
+    });
+
+    // Per il comportamento hover su desktop (mostrare il dropdown al passaggio del mouse)
+    // Questo è gestito tramite CSS in base.html e non richiede JavaScript aggiuntivo qui.
+    // Assicurati che nel tuo base.html ci sia ancora:
+    // @media (min-width: 992px) {
+    //     .navbar-custom .nav-item.dropdown:hover .dropdown-menu {
+    //         display: block;
+    //     }
+    // }
+});
+</script>
