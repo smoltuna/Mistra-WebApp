@@ -181,6 +181,7 @@ INSTALLED_APPS = [
     'djangocms_googlemap',
     'djangocms_video',
     'mistra',
+    'quiz_plugin',
     
 ]
 

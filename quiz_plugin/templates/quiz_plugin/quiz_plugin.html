@@ -1,0 +1,54 @@
+{% load cms_tags sekizai_tags static %}
+
+{% addtoblock "css" %}
+    {# Link to your quiz-specific CSS file #}
+    <link rel="stylesheet" href="{% static 'quiz_plugin/css/quiz.css' %}">
+{% endaddtoblock %}
+
+{% addtoblock "js" %}
+    {# html2pdf.js CDN #}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="{% static 'quiz_plugin/js/quiz.js' %}"></script>
+{% endaddtoblock %}
+
+{# The main container for your quiz plugin. Pass the current language code to JavaScript. #}
+<div id="quiz-container" data-language-code="{{ LANGUAGE_CODE }}"> {# ADDED data-language-code #}
+    {# Placeholders for dynamically loaded test name and description #}
+    <h2 id="quiz-title-display">Loading Quiz...</h2>
+    <p id="quiz-description-display"></p>
+
+    {# Initial form to collect age and sex #}
+    <form id="quiz-start-form">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="0" required>
+
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required>
+            <option value="">Select...</option>
+        </select>
+        <button type="submit">Start Quiz</button>
+    </form>
+
+    {# Container for displaying questions one by one #}
+    <div id="quiz-questions" style="display:none;">
+        <h3 id="question-number"></h3>
+        <p id="question-text"></p>
+        <div id="answer-options">
+            {# Answer radio buttons will be dynamically loaded here by JavaScript #}
+        </div>
+        <button id="next-question-btn">Next Question</button>
+    </div>
+
+    {# Container for displaying quiz results after completion #}
+    <div id="quiz-results" style="display:none;">
+        <h3>Quiz Results</h3>
+        <p>Your score: <span id="final-score"></span></p>
+        <p>Execution Code: <span id="execution-code"></span></p>
+        <p>Time Taken: <span id="time-taken"></span> seconds</p>
+        <div id="pass-fail-message"></div>
+        <div id="detailed-results">
+            {# Detailed question results and explanations will be dynamically loaded here #}
+        </div>
+        <button id="download-pdf-btn">Download PDF</button>
+    </div>
+</div>

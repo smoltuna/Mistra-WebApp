@@ -1,8 +1,35 @@
+/* Importa i font Inter e Playfair Display da Google Fonts. */
+/* ASSICURATI CHE QUESTE RIGHE SIANO LE PRIMISSIME NEL TUO FILE style.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+
+/* Regola universale: applica il font di base a TUTTI gli elementi. */
+/* Questo serve come fallback generale, ma le regole più specifiche prevarranno. */
+* {
+    font-family: 'Inter', sans-serif; /* Font di base più serio */
+}
+
 body, html {
     margin: 0; /* Rimuove i margini predefiniti dal body e html */
     padding: 0; /* Rimuove il padding predefinito dal body e html */
-    font-family: 'Merriweather', serif;
+    /* Imposta il font principale per tutto il documento, usando !important per forzare l'applicazione */
+    font-family: 'Inter', sans-serif !important; /* Font di base più serio */
     background-color: #f8f9fa;
+    line-height: 1.6; /* Migliora la leggibilità del testo generale */
+    color: #333; /* Colore del testo di base per una migliore leggibilità */
+}
+
+/* Applica un font diverso e più impattante per i titoli */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif !important; /* Font per i titoli */
+    font-weight: 700; /* Assicura che i titoli siano in grassetto */
+}
+
+/* Le seguenti regole specifiche per elementi sono ora meno necessarie grazie al selettore universale, */
+/* ma le manteniamo per una chiara intenzione e per catturare eventuali casi limite. */
+p, a, li, span, div,
+input, textarea, select, button {
+    font-family: 'Inter', sans-serif; /* Applica il font Inter a questi elementi */
 }
 
 .header-top, .header-mistra {
@@ -83,6 +110,10 @@ body, html {
     padding-bottom: 1.25rem; /* Aggiunto padding per il titolo */
     line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
     text-align: center; /* Centra il testo all'interno della sezione */
+    max-width: 1080px; /* Limita la larghezza massima del blocco */
+    margin-left: auto; /* Centra il blocco orizzontalmente */
+    margin-right: auto; /* Centra il blocco orizzontalmente */
+    box-sizing: border-box; /* Assicura che padding e border siano inclusi nella larghezza */
 }
 
 /* Assicurati che l'h2 all'interno non abbia margini superiori o inferiori */
@@ -194,14 +225,17 @@ table {
     line-height: 1.6;
 }
 
+/* Rimosso il commento e applicato il font anche agli h3 */
 .content-section h3 {
-    color: #1a4f6d; /* Color for subheadings, matching the title section */
-    margin-top: 1.5rem; /* Space above subheadings */
-    margin-bottom: 1rem; /* Space below subheadings */
+    color: #1a4f6d;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
     font-size: 1.5rem;
     font-weight: bold;
-    text-align: center; /* Center the "LE TESTING WEEK..." heading */
+    text-align: left;
+    font-family: 'Playfair Display', serif; /* Applica il font dei titoli anche agli h3 */
 }
+
 
 .highlight-text {
     font-weight: bold; /* Make specific text bold */
