@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from cms.models import CMSPlugin
+from cms.models import CMSPlugin # Importa CMSPlugin per QuizPluginModel
 import uuid # For unique execution codes
 import random # For random letters
 import string # For ascii_uppercase
@@ -79,18 +79,15 @@ class TestExecution(models.Model):
     duration = models.DurationField(blank=True, null=True, verbose_name=_("Duration (minutes)")) # Stored as timedelta, can be converted to minutes
     revision_date = models.DateTimeField(blank=True, null=True, verbose_name=_("Revision Date by Medical Professional"))
     note = models.TextField(blank=True, null=True, verbose_name=_("Medical Professional's Note"))
-    # NUOVO CAMPO: Dottore che ha fatto la revisione
     reviewed_by = models.ForeignKey(
         User,
-        on_delete=models.SET_NULL, # Mantiene la revisione anche se l'utente viene cancellato
-        null=True,                 # Il campo può essere nullo (utile se non c'è una revisione)
-        blank=True,                # Il campo non è obbligatorio nel form admin
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         verbose_name=_("Reviewed by Medical Professional")
     )
 
-
     def generate_execution_code(self):
-        # Example: YYYYMMDD + 3 random uppercase letters
         today = models.DateTimeField(auto_now_add=True).strftime('%Y%m%d')
         random_letters = ''.join(random.choices(string.ascii_uppercase, k=3))
         return f"{today}{random_letters}"
@@ -114,22 +111,21 @@ class GivenAnswer(models.Model):
         on_delete=models.CASCADE,
         related_name='given_in_executions'
     )
-    id_question = models.ForeignKey( # This field was added in previous step
+    id_question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
         related_name='given_answers_for_question',
     )
 
     class Meta:
-        unique_together = (('id_testExecution', 'id_question'),) # More appropriate unique constraint if one answer per question per execution
+        unique_together = (('id_testExecution', 'id_question'),)
 
     def __str__(self):
         return ""
 
-
 # CMS Plugin Model
 class QuizPluginModel(CMSPlugin):
     # test = models.ForeignKey(Test, on_delete=models.CASCADE, verbose_name=_("Select Test"))
-
+    
     def __str__(self):
         return f"Quiz Plugin (Random Test)"

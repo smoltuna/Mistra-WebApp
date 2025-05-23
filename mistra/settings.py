@@ -189,7 +189,7 @@ INSTALLED_APPS = [
 LANGUAGES = (
     ## Customize this
     ('it', gettext('it')),
-    ('en', gettext('en'))
+    # ('en', gettext('en'))
 )
 
 CMS_SITE_MODEL = 'cms.models.site.CMSSite'
@@ -204,13 +204,13 @@ CMS_LANGUAGES = {
             'public': True,
             'hide_untranslated': False,
         },
-        {
-            'code': 'en',
-            'name': _('English'), # Usiamo _() per nomi traducibili
-            'redirect_on_fallback': True,
-            'public': True,
-            'hide_untranslated': False,
-        },
+        # {
+        #     'code': 'en',
+        #     'name': _('English'), # Usiamo _() per nomi traducibili
+        #     'redirect_on_fallback': True,
+        #     'public': True,
+        #     'hide_untranslated': False,
+        # },
     ],
     'default': {
         'redirect_on_fallback': True,
