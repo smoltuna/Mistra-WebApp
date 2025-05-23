@@ -150,13 +150,13 @@ def get_random_test_questions(request, test_id):
         questions_data = []
         for qit in question_in_tests:
             question = qit.id_question
-            db_answers = list(Answer.objects.filter(id_question=question).values('id', 'texto'))
-            formatted_answers = [{'id': ans['id'], 'text': ans['texto']} for ans in db_answers]
+            db_answers = list(Answer.objects.filter(id_question=question).values('id', 'text'))
+            formatted_answers = [{'id': ans['id'], 'text': ans['text']} for ans in db_answers]
             random.shuffle(formatted_answers) # Shuffle answers for each question
 
             questions_data.append({
                 'id': question.id,
-                'text': question.texto,
+                'text': question.text,
                 'answers': formatted_answers
             })
 
@@ -230,8 +230,8 @@ def submit_results(request):
                     max_possible_score += 1
 
                 detailed_answers_for_response.append({
-                    'question_text': question.texto,
-                    'given_answer_text': given_answer.texto,
+                    'question_text': question.text,
+                    'given_answer_text': given_answer.text,
                     'is_correct': is_correct,
                     'correction_text': given_answer.correction if not is_correct and given_answer.correction else None
                 })

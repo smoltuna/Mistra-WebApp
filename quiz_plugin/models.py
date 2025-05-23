@@ -20,21 +20,21 @@ class Category(models.Model):
 class Question(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, verbose_name=_("Question Name (for internal use)"))
-    texto = models.TextField(verbose_name=_("Question Text (HTML)"))
+    text = models.TextField(verbose_name=_("Question Text (HTML)"))
     id_category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name=_("Category"))
     
     def __str__(self):
-        return f"{self.name} - {self.texto}"
+        return f"[{self.name}]: {self.text}"
 
 class Answer(models.Model):
     id = models.AutoField(primary_key=True)
-    texto = models.TextField(verbose_name=_("Answer Text (HTML)"))
+    text = models.TextField(verbose_name=_("Answer Text (HTML)"))
     score = models.DecimalField(max_digits=3, decimal_places=2, verbose_name=_("Score (-1.00 to 1.00)")) # -1, 0, 1
     correction = models.TextField(blank=True, null=True, verbose_name=_("Explanation for incorrect answer (HTML)"))
     id_question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers', verbose_name=_("Question"))
 
     def __str__(self):
-        return f"{self.texto[:50]}..." if len(self.texto) > 50 else self.texto
+        return f"{self.text[:50]}..." if len(self.text) > 50 else self.text
 
 class Test(models.Model):
     id = models.AutoField(primary_key=True)
@@ -56,7 +56,8 @@ class QuestionInTest(models.Model):
         ordering = ['order']
 
     def __str__(self):
-        return f"{self.id_question.name} in {self.id_test.name}"
+        return ""
+        # return f"{self.id_question.name} in {self.id_test.name}"
 
 class Sex(models.Model):
     id = models.AutoField(primary_key=True)

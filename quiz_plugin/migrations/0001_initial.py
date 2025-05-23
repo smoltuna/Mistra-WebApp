@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=255, verbose_name='Question Name (for internal use)')),
-                ('texto', models.TextField(verbose_name='Question Text (HTML)')),
+                ('text', models.TextField(verbose_name='Question Text (HTML)')),
                 ('id_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='quiz_plugin.category', verbose_name='Category')),
             ],
         ),
@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
             name='Answer',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('texto', models.TextField(verbose_name='Answer Text (HTML)')),
+                ('text', models.TextField(verbose_name='Answer Text (HTML)')),
                 ('score', models.DecimalField(decimal_places=2, max_digits=3, verbose_name='Score (-1.00 to 1.00)')),
                 ('correction', models.TextField(blank=True, null=True, verbose_name='Explanation for incorrect answer (HTML)')),
                 ('id_question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='answers', to='quiz_plugin.question', verbose_name='Question')),
