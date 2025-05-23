@@ -202,11 +202,17 @@ table {
 
 /* Specific styles for the content from the image */
 .content-section {
-    padding: 1.5rem; /* Add some padding around the content */
-    background-color: #fff; /* White background for the main content block */
-    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075); /* Subtle shadow */
-    border-radius: 0.25rem; /* Rounded corners */
-    margin-bottom: 2rem; /* Space below the content block */
+    padding: 1.5rem;
+    background-color: #fff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+    border-radius: 0.25rem;
+    margin-bottom: 2rem;
+
+    /* --- Aggiunte qui --- */
+    max-width: 1080px; /* Imposta la larghezza massima desiderata */
+    margin-left: auto; /* Centra l'elemento orizzontalmente */
+    margin-right: auto; /* Centra l'elemento orizzontalmente */
+    /* Puoi anche scrivere solo: margin: 0 auto 2rem auto; per consolidare */
 }
 
 .content-section p {
@@ -269,4 +275,72 @@ table {
 /* Adjustments for the main content container */
 main .container {
     padding-top: 2rem; /* Add padding to the top of the main content area */
+}
+
+/* Video */
+.responsive-video {
+    width: 100%;       /* Il video occupa tutta la larghezza disponibile del suo contenitore */
+    height: auto;      /* L'altezza si adatta proporzionalmente alla larghezza per mantenere l'aspect ratio */
+    max-width: 640px;  /* (Opzionale) Limita la larghezza massima al suo valore originale */
+                       /* Questo evita che il video diventi troppo grande su schermi enormi */
+}
+
+/* Tabella per stringhe */
+/* Stile per i titoli delle UOC */
+.department-list h2 {
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333; /* O un colore che preferisci */
+    border-bottom: 1px solid #eee; /* Una linea sotto il titolo */
+    padding-bottom: 0.5rem;
+}
+
+/* Contenitore Flexbox per le persone in colonne */
+.person-grid {
+    display: flex;             /* Abilita Flexbox */
+    flex-wrap: wrap;           /* Permette agli elementi di andare a capo su più righe */
+    gap: 1.5rem;               /* Spazio tra le card (sia orizzontale che verticale) */
+    justify-content: flex-start; /* Allinea gli elementi all'inizio (sinistra) */
+    /* Se volessi centrarli: justify-content: center; */
+}
+
+/* Stile per ogni singola "card" persona */
+.person-card {
+    flex: 1 1 calc(33.333% - 1rem); /* 33.333% per 3 colonne, -1rem per compensare il gap */
+    min-width: 250px;             /* Larghezza minima per evitare che le card diventino troppo strette su schermi piccoli */
+    box-sizing: border-box;       /* Include padding e border nel calcolo della larghezza */
+    padding: 1rem;
+    background-color: #f9f9f9;    /* Uno sfondo leggero per le card */
+    border-radius: 0.25rem;
+    /* Puoi aggiungere un box-shadow qui se vuoi che le card si distinguano */
+    /* box-shadow: 0 0.0625rem 0.125rem rgba(0,0,0,.05); */
+}
+
+/* Stile per i nomi e i ruoli all'interno della card */
+.person-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.15rem; /* Rendi il nome leggermente più grande */
+    color: #0056b3; /* Un colore per i nomi */
+}
+
+.person-card p {
+    margin-bottom: 0;
+    font-size: 0.95rem; /* Rendi il ruolo leggermente più piccolo */
+    color: #555;
+}
+
+/* Media Query per la Responsività */
+/* Su schermi più piccoli (tablet e cellulari), mostra 2 colonne */
+@media (max-width: 992px) { /* Esempio: schermi più piccoli di 992px */
+    .person-card {
+        flex: 1 1 calc(50% - 0.75rem); /* 2 colonne (50%), -0.75rem per compensare il gap */
+    }
+}
+
+/* Su schermi molto piccoli (cellulari), mostra 1 colonna */
+@media (max-width: 576px) { /* Esempio: schermi più piccoli di 576px */
+    .person-card {
+        flex: 1 1 100%; /* 1 colonna (100%) */
+    }
 }

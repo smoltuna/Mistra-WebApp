@@ -183,6 +183,7 @@ INSTALLED_APPS = [
     'mistra',
     'quiz_plugin',
     
+    
 ]
 
 LANGUAGES = (
@@ -192,7 +193,8 @@ LANGUAGES = (
 )
 
 CMS_SITE_MODEL = 'cms.models.site.CMSSite'
-
+TEXT_ADDITIONAL_TAGS = ('iframe',)
+TEXT_ADDITIONAL_ATTRIBUTES = ('scrolling', 'allowfullscreen', 'frameborder', 'src', 'height', 'width')
 CMS_LANGUAGES = {
     1: [
         {
