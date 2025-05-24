@@ -229,3 +229,53 @@
 #download-pdf-btn:hover {
     background-color: #5a6268;
 }
+
+/* Reset per il testo della domanda quando è un h1 dentro #question-text */
+#question-text h1 {
+    all: unset; /* Reset completo per l'h1 dentro la domanda */
+    display: block; /* Mantiene il comportamento di blocco dell'h1 */
+    /* Stili desiderati per l'h1 della domanda */
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+    margin: 0; /* Rimuove i margini predefiniti dell'h1 */
+    padding: 0;
+}
+
+/* Reset per il testo delle risposte quando sono h2 dentro #answer-options label */
+#answer-options label h2,
+#answer-options label h1 { /* Nel caso ci siano entrambi */
+    all: unset; /* Reset completo per h1/h2 dentro le risposte */
+    display: inline; /* Se vuoi che stiano sulla stessa riga della label */
+    /* Stili desiderati per h1/h2 delle risposte */
+    font-size: 1.1em; /* Deve essere più piccolo del testo della domanda */
+    font-weight: normal;
+    color: inherit; /* Eredita il colore dalla label genitore */
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile base per le label (come sopra) */
+#answer-options label {
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Rimuovi font-size, font-weight, color da qui se gestiti dai tag interni */
+}
+
+/* Stile per l'opzione di risposta selezionata (radio button) */
+#answer-options input[type="radio"]:checked + label {
+    background-color: #007bff;
+    border-color: #0056b3;
+}
+
+/* Per il testo all'interno della label selezionata */
+#answer-options input[type="radio"]:checked + label h2,
+#answer-options input[type="radio"]:checked + label h1 {
+    color: white; /* Il testo dentro la label selezionata diventa bianco */
+}
