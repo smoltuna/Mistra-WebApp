@@ -50,7 +50,7 @@
 }
 
 #quiz-start-form button {
-    background-color: #28a745;
+    background-color: #198754;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -140,6 +140,8 @@
     border-top: 1px solid #eee;
     padding-top: 20px;
     text-align: center;
+    border: 2px solid #800000; /* Rosso scuro per il bordo, per un contrasto migliore */
+    background-color: #fff3d1; /* Sfondo quasi bianco, molto chiaro per migliorare il contrasto con i testi interni */
 }
 
 #quiz-results h3 {
@@ -155,7 +157,13 @@
 
 #final-score {
     font-weight: bold;
-    color: #28a745; /* Green for score */
+    /* Colore attuale: #28a745 (verde scuro) su #fdfdfd (sfondo di #quiz-results) = 3.12:1 */
+    /* Opzione 1 (già suggerita): */
+    /* color: #1a6b2c; /* Verde più scuro, contrasto circa 4.6:1 su #fdfdfd */
+    /* Opzione 2: */
+    color: #006400; /* DarkGreen, contrasto 5.4:1 su #fdfdfd */
+    /* Opzione 3: */
+    /* color: #008000; /* Green (HTML), contrasto 4.5:1 su #fdfdfd */
 }
 
 #execution-code, #time-taken {
@@ -191,12 +199,18 @@
 }
 
 .correction-text {
-    color: #dc3545; /* Red for explanations of incorrect answers */
     font-style: italic;
     font-weight: bold;
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px dashed #f5c6cb;
+    /* Colore attuale: #dc3545 (rosso scuro) su #f0f8ff (blu chiaro) = 4.22:1 */
+    /* Opzione 1 (già suggerita): */
+    /* color: #a00000; /* Rosso molto scuro, contrasto circa 5.8:1 su #f0f8ff */
+    /* Opzione 2: */
+    color: #C00000; /* Rosso scuro, contrasto 4.58:1 su #f0f8ff */
+    /* Opzione 3: */
+    /* color: #B22222; /* Firebrick, contrasto 5.09:1 su #f0f8ff */
 }
 
 #download-pdf-btn {
@@ -214,10 +228,4 @@
 
 #download-pdf-btn:hover {
     background-color: #5a6268;
-}
-
-#quiz-results {
-    border: 2px solid red; /* Add a border */
-    background-color: lightyellow; /* Add a background color */
-    padding: 20px;
 }
