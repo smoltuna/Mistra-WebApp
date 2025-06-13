@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Results</title>
+    <style>
+        /* Stili di base per un PDF pulito */
+        @page {
+            size: A4;
+            margin: 1in;
+        }
+
+        body {
+            font-family: "Helvetica", "Arial", sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #004085;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        .results-summary {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .results-summary p {
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        .question-block {
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            page-break-inside: avoid; /* Cerca di non spezzare un blocco tra due pagine */
+        }
+        
+        .question-block h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        /* Supporto per le immagini! */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .correct {
+            font-weight: bold;
+            color: #155724; /* Verde scuro */
+        }
+
+        .incorrect {
+            font-weight: bold;
+            color: #721c24; /* Rosso scuro */
+        }
+
+        .explanation {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffeeba;
+            padding: 10px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Results Summary</h1>
+
+    <div class="results-summary">
+        <p><strong>Execution Code:</strong> {{ execution_code }}</p>
+        <p><strong>Your Score:</strong> {{ score }}/{{ max_score }}</p>
+        <p>
+            <strong>Result:</strong>
+            <span class="{% if pass_status == 'Passed' %}correct{% else %}incorrect{% endif %}">
+                {{ pass_status }}
+            </span>
+        </p>
+    </div>
+
+    <h2>Detailed Answers</h2>
+
+    {% for item in detailed_answers %}
+        <div class="question-block">
+            <h4>Q{{ forloop.counter }}: {{ item.question_text|safe }}</h4>
+            <p>
+                <strong>Your Answer:</strong> {{ item.given_answer_text|safe }}
+                <span class="{% if item.is_correct %}correct{% else %}incorrect{% endif %}">
+                    ({% if item.is_correct %}Correct{% else %}Incorrect{% endif %})
+                </span>
+            </p>
+            {% if not item.is_correct and item.correction_text %}
+                <div class="explanation">
+                    <strong>Explanation:</strong> {{ item.correction_text|safe }}
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+</body>
+</html>
