@@ -8,10 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const sexSelect = document.getElementById('sex');
 
     const quizQuestionsDiv = document.getElementById('quiz-questions');
+    const progressIndicatorDiv = document.getElementById('quiz-progress-indicator');
     const questionNumberElement = document.getElementById('question-number');
     const questionTextElement = document.getElementById('question-text');
     const answerOptionsDiv = document.getElementById('answer-options');
+    const prevQuestionBtn = document.getElementById('prev-question-btn');
     const nextQuestionBtn = document.getElementById('next-question-btn');
+    const finishQuizBtn = document.getElementById('finish-quiz-btn');
 
     const quizResultsDiv = document.getElementById('quiz-results');
     const finalScoreElement = document.getElementById('final-score');
@@ -32,10 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let quizExecutionCode = null;
     let latestQuizResults = null;
 
-    // Get the language code from the quiz-container data attribute
-    const languageCode = quizContainer.dataset.languageCode || 'en'; // Default to 'en' if not found
+    const languageCode = quizContainer.dataset.languageCode || 'en';
 
     // --- Initialization ---
+    // ... (codice invariato) ...
     async function initializeQuizPlugin() {
         await getSexOptions();
         await loadRandomTestDetails();
@@ -43,11 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadRandomTestDetails() {
         try {
-            // Prepend language code to the API URL
             const randomTestResponse = await fetch(`/${languageCode}/quiz/api/random_test_id/`);
-            if (!randomTestResponse.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!randomTestResponse.ok) throw new Error(`HTTP error! status: ${randomTestResponse.status}`);
             const randomTestData = await randomTestResponse.json();
             currentTestId = randomTestData.test_id;
             currentTestName = randomTestData.test_name;
@@ -55,10 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!currentTestId) {
                 quizTitleDisplay.textContent = 'Error: No tests available.';
-                console.error('No random test ID could be fetched.');
                 return;
             }
-
             quizTitleDisplay.textContent = currentTestName;
             quizDescriptionDisplay.textContent = currentTestDescription;
 
@@ -68,16 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
             quizDescriptionDisplay.textContent = 'Please try refreshing the page.';
         }
     }
-
     initializeQuizPlugin();
-
     async function getSexOptions() {
         try {
-            // Prepend language code to the API URL
             const response = await fetch(`/${languageCode}/quiz/api/sex_options/`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
             sexSelect.innerHTML = '<option value="">Select...</option>';
             data.sex_options.forEach(option => {
@@ -91,19 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Event Listeners ---
 
+    // --- Event Listeners ---
+    // ... (quizStartForm event listener invariato) ...
     quizStartForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
-        const age = ageInput.value;
-        const sex = sexSelect.value;
-
-        if (!age || !sex) {
+        if (!ageInput.value || !sexSelect.value) {
             alert('Please enter your age and select your sex.');
             return;
         }
-
         if (!currentTestId) {
             alert('Quiz not loaded yet. Please wait or refresh.');
             return;
@@ -112,11 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
         quizStartTime = Date.now();
 
         try {
-            // Prepend language code to the API URL
             const response = await fetch(`/${languageCode}/quiz/api/test/${currentTestId}/questions/`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const data = await response.json();
             currentQuestions = data.questions;
 
@@ -125,8 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            userAnswers = Array(currentQuestions.length).fill(null);
             currentQuestionIndex = 0;
-            userAnswers = [];
+            
+            quizStartForm.style.display = 'none';
+            quizQuestionsDiv.style.display = 'block';
+            renderProgressIndicator();
             renderQuestion();
 
         } catch (error) {
@@ -135,21 +125,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    nextQuestionBtn.addEventListener('click', () => {
-        const selectedAnswerInput = document.querySelector('input[name="answer"]:checked');
-        if (!selectedAnswerInput) {
-            alert('Please select an answer before proceeding.');
-            return;
+
+    // FIX: [Problema 2] Aggiungi un event listener al contenitore delle risposte
+    // per reagire subito al click su una radio.
+    answerOptionsDiv.addEventListener('click', (event) => {
+        // Usa event delegation per verificare se è stata cliccata una radio
+        if (event.target.type === 'radio') {
+            saveCurrentAnswer(); // Salva la risposta e aggiorna lo stato dei pulsanti
         }
-
-        userAnswers.push({
-            question_id: currentQuestions[currentQuestionIndex].id,
-            answer_id: parseInt(selectedAnswerInput.value)
-        });
-
-        currentQuestionIndex++;
-        renderQuestion();
     });
+
+    prevQuestionBtn.addEventListener('click', () => {
+        saveCurrentAnswer();
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            renderQuestion();
+        }
+    });
+    
+    nextQuestionBtn.addEventListener('click', () => {
+        saveCurrentAnswer();
+        if (currentQuestionIndex < currentQuestions.length - 1) {
+            currentQuestionIndex++;
+            renderQuestion();
+        }
+    });
+
+    finishQuizBtn.addEventListener('click', () => {
+        saveCurrentAnswer();
+        if (checkAllQuestionsAnswered()) {
+            quizDuration = Math.round((Date.now() - quizStartTime) / 1000);
+            submitQuizResults();
+        } else {
+            alert('Please answer all questions before finishing the quiz.');
+        }
+    });
+
 
     if (downloadPdfBtn) {
         downloadPdfBtn.addEventListener('click', async () => {
@@ -204,77 +215,121 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Core Quiz Functions ---
-
-    function renderQuestion() {
-        if (currentQuestionIndex < currentQuestions.length) {
-            const question = currentQuestions[currentQuestionIndex];
-
-            questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${currentQuestions.length}`;
-            questionTextElement.innerHTML = question.text;
-
-            answerOptionsDiv.innerHTML = '';
-
-            const shuffledAnswers = shuffleArray(question.answers);
-
-            shuffledAnswers.forEach(answer => {
-                const answerDiv = document.createElement('div');
-                const radioInput = document.createElement('input');
-                radioInput.type = 'radio';
-                radioInput.name = 'answer';
-                radioInput.value = answer.id;
-                radioInput.id = `answer-${answer.id}`;
-
-                const label = document.createElement('label');
-                label.htmlFor = `answer-${answer.id}`;
-                label.innerHTML = answer.text;
-
-                answerDiv.appendChild(radioInput);
-                answerDiv.appendChild(label);
-                answerOptionsDiv.appendChild(answerDiv);
+    // ... (tutte le altre funzioni fino a displayResults rimangono invariate) ...
+    function saveCurrentAnswer() {
+        const selectedAnswerInput = document.querySelector('input[name="answer"]:checked');
+        if (selectedAnswerInput) {
+            userAnswers[currentQuestionIndex] = {
+                question_id: currentQuestions[currentQuestionIndex].id,
+                answer_id: parseInt(selectedAnswerInput.value)
+            };
+        }
+        checkSubmitButtonState();
+        updateProgressIndicator();
+    }
+    function renderProgressIndicator() {
+        progressIndicatorDiv.innerHTML = '';
+        currentQuestions.forEach((_, index) => {
+            const progressBtn = document.createElement('button');
+            progressBtn.textContent = index + 1;
+            progressBtn.classList.add('progress-btn');
+            progressBtn.dataset.index = index;
+            progressBtn.addEventListener('click', () => {
+                saveCurrentAnswer();
+                currentQuestionIndex = index;
+                renderQuestion();
             });
-
-            quizStartForm.style.display = 'none';
-            quizQuestionsDiv.style.display = 'block';
-            quizResultsDiv.style.display = 'none';
-        } else {
-            quizDuration = Math.round((Date.now() - quizStartTime) / 1000);
-            submitQuizResults();
+            progressIndicatorDiv.appendChild(progressBtn);
+        });
+    }
+    function updateProgressIndicator() {
+        const progressBtns = document.querySelectorAll('.progress-btn');
+        progressBtns.forEach((btn, index) => {
+            btn.classList.remove('current', 'answered');
+            if (userAnswers[index] !== null) {
+                btn.classList.add('answered');
+            }
+            if (index === currentQuestionIndex) {
+                btn.classList.add('current');
+            }
+        });
+    }
+    function jumpToQuestion(index) {
+        if (index >= 0 && index < currentQuestions.length) {
+            saveCurrentAnswer();
+            currentQuestionIndex = index;
+            renderQuestion();
         }
     }
+    function renderQuestion() {
+        const question = currentQuestions[currentQuestionIndex];
+        questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${currentQuestions.length}`;
+        questionTextElement.innerHTML = question.text;
 
+        answerOptionsDiv.innerHTML = '';
+        const shuffledAnswers = shuffleArray([...question.answers]);
+
+        shuffledAnswers.forEach(answer => {
+            const answerDiv = document.createElement('div');
+            const radioInput = document.createElement('input');
+            radioInput.type = 'radio';
+            radioInput.name = 'answer';
+            radioInput.value = answer.id;
+            radioInput.id = `answer-${answer.id}`;
+
+            if (userAnswers[currentQuestionIndex] && userAnswers[currentQuestionIndex].answer_id === answer.id) {
+                radioInput.checked = true;
+            }
+
+            const label = document.createElement('label');
+            label.htmlFor = `answer-${answer.id}`;
+            label.innerHTML = answer.text;
+
+            answerDiv.appendChild(radioInput);
+            answerDiv.appendChild(label);
+            answerOptionsDiv.appendChild(answerDiv);
+        });
+        
+        prevQuestionBtn.style.display = currentQuestionIndex > 0 ? 'inline-block' : 'none';
+        nextQuestionBtn.style.display = currentQuestionIndex < currentQuestions.length - 1 ? 'inline-block' : 'none';
+
+        updateProgressIndicator();
+    }
+    function checkAllQuestionsAnswered() {
+        return userAnswers.every(answer => answer !== null);
+    }
+    function checkSubmitButtonState() {
+        if (checkAllQuestionsAnswered()) {
+            finishQuizBtn.disabled = false;
+        } else {
+            finishQuizBtn.disabled = true;
+        }
+    }
     async function submitQuizResults() {
-        const age = ageInput.value;
-        const sex = sexSelect.value;
-        const csrfToken = getCookie('csrftoken');
-
+        const finalAnswers = userAnswers.filter(a => a !== null);
+        if (finalAnswers.length !== currentQuestions.length) {
+            alert("Error: Not all questions have been answered.");
+            return;
+        }
+        
         const payload = {
             test_id: currentTestId,
-            age: parseInt(age),
-            sex_id: parseInt(sex),
+            age: parseInt(ageInput.value),
+            sex_id: parseInt(sexSelect.value),
             duration: quizDuration,
-            answers: userAnswers,
+            answers: finalAnswers,
         };
 
         try {
-            // Prepend language code to the API URL
             const response = await fetch(`/${languageCode}/quiz/api/submit_results/`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
                 body: JSON.stringify(payload),
             });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const result = await response.json();
-            quizExecutionCode = result.execution_code;
             latestQuizResults = result;
             displayResults(result);
-            console.log("Quiz results submitted successfully:", result);
 
         } catch (error) {
             console.error('Error submitting quiz results:', error);
@@ -282,40 +337,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
+    // FIX: [Problema 3] Rendiamo la funzione di visualizzazione più robusta
+    // assicurandoci che i dati esistano prima di provare a mostrarli.
     function displayResults(results) {
+        // Verifica che i dati dei risultati e gli elementi DOM esistano
+        if (!results || !finalScoreElement || !executionCodeElement || !timeTakenElement) {
+            console.error("Results data or DOM elements are missing.");
+            detailedResultsDiv.innerHTML = '<p>Error displaying results.</p>';
+            return;
+        }
+
+        // Popola i campi con i valori ricevuti
         finalScoreElement.textContent = `${results.score}/${results.max_score}`;
         executionCodeElement.textContent = results.execution_code;
         timeTakenElement.textContent = `${results.duration} seconds`;
 
-        detailedResultsDiv.innerHTML = '';
-        results.detailed_answers.forEach(item => {
-            const resultItemDiv = document.createElement('div');
-            resultItemDiv.classList.add('quiz-result-item');
+        detailedResultsDiv.innerHTML = ''; // Svuota i risultati precedenti
+        if (results.detailed_answers && Array.isArray(results.detailed_answers)) {
+            results.detailed_answers.forEach(item => {
+                const resultItemDiv = document.createElement('div');
+                resultItemDiv.classList.add('quiz-result-item');
 
-            const questionText = document.createElement('h4');
-            questionText.innerHTML = `Question: ${item.question_text}`;
-            resultItemDiv.appendChild(questionText);
+                const questionText = document.createElement('h4');
+                questionText.innerHTML = `Question: ${item.question_text}`;
+                resultItemDiv.appendChild(questionText);
 
-            const userAnswer = document.createElement('p');
-            userAnswer.innerHTML = `Your Answer: ${item.given_answer_text} ` +
-                                   `<span class="${item.is_correct ? 'correct' : 'incorrect'}">` +
-                                   `${item.is_correct ? '(Correct)' : '(Incorrect)'}</span>`;
-            resultItemDiv.appendChild(userAnswer);
+                const userAnswer = document.createElement('p');
+                userAnswer.innerHTML = `Your Answer: ${item.given_answer_text} ` +
+                                    `<span class="${item.is_correct ? 'correct' : 'incorrect'}">` +
+                                    `${item.is_correct ? '(Correct)' : '(Incorrect)'}</span>`;
+                resultItemDiv.appendChild(userAnswer);
 
-            if (!item.is_correct && item.correction_text) {
-                const correction = document.createElement('p');
-                correction.innerHTML = `Explanation: ${item.correction_text}`;
-                correction.classList.add('correction-text');
-                resultItemDiv.appendChild(correction);
-            }
-            detailedResultsDiv.appendChild(resultItemDiv);
-        });
+                if (!item.is_correct && item.correction_text) {
+                    const correction = document.createElement('p');
+                    correction.innerHTML = `Explanation: ${item.correction_text}`;
+                    correction.classList.add('correction-text');
+                    resultItemDiv.appendChild(correction);
+                }
+                detailedResultsDiv.appendChild(resultItemDiv);
+            });
+        }
 
         const minPassingScore = parseFloat(results.min_score);
         const userScore = parseFloat(results.score);
 
         const passFailMessageElement = document.getElementById('pass-fail-message');
-
         if (userScore >= minPassingScore) {
             passFailMessageElement.textContent = `Result: Passed!`;
             passFailMessageElement.style.color = 'green';
@@ -331,27 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Utility Functions ---
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
+    // ... (getCookie e shuffleArray invariati) ...
+    function getCookie(name) { let cookieValue = null; if (document.cookie && document.cookie !== '') { const cookies = document.cookie.split(';'); for (let i = 0; i < cookies.length; i++) { const cookie = cookies[i].trim(); if (cookie.substring(0, name.length + 1) === (name + '=')) { cookieValue = decodeURIComponent(cookie.substring(name.length + 1)); break; } } } return cookieValue; }
+    function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } return array; }
 });

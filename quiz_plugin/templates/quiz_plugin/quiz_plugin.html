@@ -12,7 +12,7 @@
 {% endaddtoblock %}
 
 {# The main container for your quiz plugin. Pass the current language code to JavaScript. #}
-<div id="quiz-container" data-language-code="{{ LANGUAGE_CODE }}"> {# ADDED data-language-code #}
+<div id="quiz-container" data-language-code="{{ LANGUAGE_CODE }}">
     {# Placeholders for dynamically loaded test name and description #}
     <h2 id="quiz-title-display">Loading Quiz...</h2>
     <p id="quiz-description-display"></p>
@@ -31,12 +31,23 @@
 
     {# Container for displaying questions one by one #}
     <div id="quiz-questions" style="display:none;">
+        <!-- NUOVO: Indicatore di progresso per le domande -->
+        <div id="quiz-progress-indicator"></div>
+        
         <h3 id="question-number"></h3>
         <p id="question-text"></p>
         <div id="answer-options">
             {# Answer radio buttons will be dynamically loaded here by JavaScript #}
         </div>
-        <button id="next-question-btn">Next Question</button>
+
+        <!-- NUOVO: Contenitore per i pulsanti di navigazione -->
+        <div class="quiz-navigation">
+            <button id="prev-question-btn">Previous Question</button>
+            <button id="next-question-btn">Next Question</button>
+        </div>
+
+        <!-- NUOVO: Pulsante per consegnare il quiz, inizialmente disabilitato -->
+        <button id="finish-quiz-btn" disabled>Finish Quiz</button>
     </div>
 
     {# Container for displaying quiz results after completion #}

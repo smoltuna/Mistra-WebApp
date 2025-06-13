@@ -46,7 +46,7 @@
     border-radius: 4px;
     font-size: 1em;
     width: 100%;
-    box-sizing: border-box; /* Include padding in element's total width and height */
+    box-sizing: border-box;
 }
 
 #quiz-start-form button {
@@ -58,7 +58,7 @@
     cursor: pointer;
     font-size: 1.1em;
     transition: background-color 0.3s ease;
-    align-self: flex-end; /* Align button to the right */
+    align-self: flex-end;
 }
 
 #quiz-start-form button:hover {
@@ -106,33 +106,23 @@
 
 #answer-options input[type="radio"] {
     margin-right: 15px;
-    transform: scale(1.2); /* Slightly larger radio buttons */
+    transform: scale(1.2);
 }
 
 #answer-options label {
-    flex-grow: 1; /* Make label take remaining space */
+    flex-grow: 1;
     cursor: pointer;
     font-size: 1em;
-    font-weight: normal; /* Override default bold for labels */
+    font-weight: normal;
 }
 
-#quiz-questions button#next-question-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
-    display: block; /* Make button full width or use align-self in flex container */
-    margin-top: 20px;
-    width: 100%;
-}
-
-#quiz-questions button#next-question-btn:hover {
-    background-color: #0056b3;
-}
+/* 
+ * ===================================================================
+ *  REGOLA VECCHIA E PROBLEMATICA RIMOSSA
+ *  Il blocco `#quiz-questions button#next-question-btn {...}`
+ *  è stato CANCELLATO da qui.
+ * ===================================================================
+ */
 
 /* Quiz Results Section Styling */
 #quiz-results {
@@ -140,8 +130,8 @@
     border-top: 1px solid #eee;
     padding-top: 20px;
     text-align: center;
-    border: 2px solid #800000; /* Rosso scuro per il bordo, per un contrasto migliore */
-    background-color: #fff3d1; /* Sfondo quasi bianco, molto chiaro per migliorare il contrasto con i testi interni */
+    border: 2px solid #800000;
+    background-color: #fff3d1;
 }
 
 #quiz-results h3 {
@@ -157,13 +147,7 @@
 
 #final-score {
     font-weight: bold;
-    /* Colore attuale: #28a745 (verde scuro) su #fdfdfd (sfondo di #quiz-results) = 3.12:1 */
-    /* Opzione 1 (già suggerita): */
-    /* color: #1a6b2c; /* Verde più scuro, contrasto circa 4.6:1 su #fdfdfd */
-    /* Opzione 2: */
-    color: #006400; /* DarkGreen, contrasto 5.4:1 su #fdfdfd */
-    /* Opzione 3: */
-    /* color: #008000; /* Green (HTML), contrasto 4.5:1 su #fdfdfd */
+    color: #006400;
 }
 
 #execution-code, #time-taken {
@@ -204,17 +188,11 @@
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px dashed #f5c6cb;
-    /* Colore attuale: #dc3545 (rosso scuro) su #f0f8ff (blu chiaro) = 4.22:1 */
-    /* Opzione 1 (già suggerita): */
-    /* color: #a00000; /* Rosso molto scuro, contrasto circa 5.8:1 su #f0f8ff */
-    /* Opzione 2: */
-    color: #C00000; /* Rosso scuro, contrasto 4.58:1 su #f0f8ff */
-    /* Opzione 3: */
-    /* color: #B22222; /* Firebrick, contrasto 5.09:1 su #f0f8ff */
+    color: #C00000;
 }
 
 #download-pdf-btn {
-    background-color: #6c757d; /* Grey for PDF button */
+    background-color: #6c757d;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -230,32 +208,30 @@
     background-color: #5a6268;
 }
 
-/* Reset per il testo della domanda quando è un h1 dentro #question-text */
-#question-text h1 {
-    all: unset; /* Reset completo per l'h1 dentro la domanda */
-    display: block; /* Mantiene il comportamento di blocco dell'h1 */
-    /* Stili desiderati per l'h1 della domanda */
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #333;
-    margin: 0; /* Rimuove i margini predefiniti dell'h1 */
-    padding: 0;
-}
-
-/* Reset per il testo delle risposte quando sono h2 dentro #answer-options label */
+/* Reset per tag HTML dentro domanda/risposta */
+#question-text h1,
 #answer-options label h2,
-#answer-options label h1 { /* Nel caso ci siano entrambi */
-    all: unset; /* Reset completo per h1/h2 dentro le risposte */
-    display: inline; /* Se vuoi che stiano sulla stessa riga della label */
-    /* Stili desiderati per h1/h2 delle risposte */
-    font-size: 1.1em; /* Deve essere più piccolo del testo della domanda */
-    font-weight: normal;
-    color: inherit; /* Eredita il colore dalla label genitore */
+#answer-options label h1 {
+    all: unset;
+    display: block;
     margin: 0;
     padding: 0;
 }
 
-/* Stile base per le label (come sopra) */
+#question-text h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+}
+
+#answer-options label h2,
+#answer-options label h1 {
+    font-size: 1.1em;
+    font-weight: normal;
+    color: inherit;
+}
+
+/* Stile base per le label */
 #answer-options label {
     display: block;
     padding: 10px 15px;
@@ -265,17 +241,118 @@
     background-color: #f9f9f9;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    /* Rimuovi font-size, font-weight, color da qui se gestiti dai tag interni */
 }
 
-/* Stile per l'opzione di risposta selezionata (radio button) */
+/* Stile per la label selezionata */
 #answer-options input[type="radio"]:checked + label {
     background-color: #007bff;
     border-color: #0056b3;
+    color: white; /* Rende bianco il testo normale dentro la label */
 }
 
-/* Per il testo all'interno della label selezionata */
 #answer-options input[type="radio"]:checked + label h2,
 #answer-options input[type="radio"]:checked + label h1 {
-    color: white; /* Il testo dentro la label selezionata diventa bianco */
+    color: white; /* Rende bianchi anche gli header dentro la label */
+}
+
+/* NUOVO: Stili per l'indicatore di progresso */
+#quiz-progress-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.progress-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background-color: #ffffff;
+    color: #555;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-btn:hover {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.progress-btn.answered {
+    background-color: #cce7ff;
+    border-color: #99cfff;
+}
+
+.progress-btn.current {
+    border-color: #0056b3;
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.1);
+}
+
+/* CONTENITORE DI NAVIGAZIONE */
+.quiz-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    gap: 15px;
+}
+
+/* 
+ * ===================================================================
+ *  STILE UNIFICATO E CORRETTO PER I PULSANTI DI NAVIGAZIONE
+ *  Questa è l'unica regola che devi avere per questi due pulsanti.
+ * ===================================================================
+ */
+#prev-question-btn, 
+#next-question-btn {
+    /* Colore e aspetto */
+    background-color: #007bff; /* BLU per entrambi */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    /* Dimensioni e testo */
+    flex: 1; /* <<-- Questa è la chiave: stessa dimensione */
+    padding: 12px 20px;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+#prev-question-btn:hover, 
+#next-question-btn:hover {
+    background-color: #0056b3; /* Un blu più scuro al passaggio del mouse */
+}
+
+
+/* PULSANTE FINISH QUIZ */
+#finish-quiz-btn {
+    background-color: #28a745;
+    color: white;
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+#finish-quiz-btn:hover {
+    background-color: #218838;
+}
+
+#finish-quiz-btn:disabled {
+    background-color: #a9a9a9;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
