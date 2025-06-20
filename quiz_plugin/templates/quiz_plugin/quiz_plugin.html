@@ -6,9 +6,8 @@
 {% endaddtoblock %}
 
 {% addtoblock "js" %}
-    {# html2pdf.js CDN #}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="{% static 'quiz_plugin/js/quiz.js' %}"></script>
+    {# html2pdf.js è stato rimosso correttamente da qui. #}
+    <script src="{% static 'quiz_plugin/js/quiz.js' %}" defer></script>
 {% endaddtoblock %}
 
 {# The main container for your quiz plugin. Pass the current language code to JavaScript. #}

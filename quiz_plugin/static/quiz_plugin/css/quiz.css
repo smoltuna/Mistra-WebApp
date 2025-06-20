@@ -1,32 +1,29 @@
-/* quiz_plugin/static/quiz_plugin/css/quiz.css */
-
+/* Stili principali per il contenitore del quiz */
 #quiz-container {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 25px;
-    max-width: 600px;
+    max-width: 800px;
     margin: 30px auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
     color: #333;
 }
 
-#quiz-container h2 {
+#quiz-container h2,
+#quiz-container h3 {
     color: #0056b3;
-    margin-bottom: 10px;
-    font-size: 1.8em;
     text-align: center;
 }
 
 #quiz-container p {
+    text-align: center;
     font-size: 1.1em;
     line-height: 1.6;
-    margin-bottom: 20px;
-    text-align: center;
 }
 
-/* Quiz Start Form Styling */
+/* Form iniziale */
 #quiz-start-form {
     display: flex;
     flex-direction: column;
@@ -36,7 +33,6 @@
 
 #quiz-start-form label {
     font-weight: bold;
-    margin-bottom: 5px;
 }
 
 #quiz-start-form input[type="number"],
@@ -44,7 +40,6 @@
     padding: 10px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1em;
     width: 100%;
     box-sizing: border-box;
 }
@@ -57,32 +52,15 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 1.1em;
-    transition: background-color 0.3s ease;
     align-self: flex-end;
+    transition: background-color 0.3s ease;
 }
 
 #quiz-start-form button:hover {
-    background-color: #218838;
+    background-color: #157347;
 }
 
-/* Quiz Questions Section Styling */
-#quiz-questions {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-}
-
-#quiz-questions h3 {
-    color: #0056b3;
-    font-size: 1.5em;
-    margin-bottom: 15px;
-}
-
-#quiz-questions p {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-}
-
+/* Sezione delle domande */
 #answer-options {
     margin-bottom: 25px;
 }
@@ -96,12 +74,11 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 #answer-options div:hover {
     background-color: #d8efff;
-    border-color: #aaddff;
 }
 
 #answer-options input[type="radio"] {
@@ -109,153 +86,11 @@
     transform: scale(1.2);
 }
 
-#answer-options label {
-    flex-grow: 1;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: normal;
-}
-
-/* 
- * ===================================================================
- *  REGOLA VECCHIA E PROBLEMATICA RIMOSSA
- *  Il blocco `#quiz-questions button#next-question-btn {...}`
- *  è stato CANCELLATO da qui.
- * ===================================================================
- */
-
-/* Quiz Results Section Styling */
-#quiz-results {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-    text-align: center;
-    border: 2px solid #800000;
-    background-color: #fff3d1;
-}
-
-#quiz-results h3 {
-    color: #0056b3;
-    font-size: 1.6em;
-    margin-bottom: 15px;
-}
-
-#quiz-results p {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-}
-
-#final-score {
-    font-weight: bold;
-    color: #006400;
-}
-
-#execution-code, #time-taken {
-    font-weight: bold;
-    color: #0056b3;
-}
-
-#detailed-results {
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-    text-align: left;
-}
-
-.quiz-result-item {
-    background-color: #f0f8ff;
-    border: 1px solid #d0eeff;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.quiz-result-item h4 {
-    color: #004085;
-    margin-bottom: 10px;
-    font-size: 1.2em;
-}
-
-.quiz-result-item p {
-    font-size: 0.95em;
-    margin-bottom: 5px;
-    line-height: 1.5;
-}
-
-.correction-text {
-    font-style: italic;
-    font-weight: bold;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed #f5c6cb;
-    color: #C00000;
-}
-
-#download-pdf-btn {
-    background-color: #6c757d;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1em;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
-    width: 100%;
-}
-
-#download-pdf-btn:hover {
-    background-color: #5a6268;
-}
-
-/* Reset per tag HTML dentro domanda/risposta */
-#question-text h1,
-#answer-options label h2,
-#answer-options label h1 {
-    all: unset;
-    display: block;
-    margin: 0;
-    padding: 0;
-}
-
-#question-text h1 {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #333;
-}
-
-#answer-options label h2,
-#answer-options label h1 {
-    font-size: 1.1em;
-    font-weight: normal;
-    color: inherit;
-}
-
-/* Stile base per le label */
-#answer-options label {
-    display: block;
-    padding: 10px 15px;
-    margin-bottom: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-/* Stile per la label selezionata */
 #answer-options input[type="radio"]:checked + label {
-    background-color: #007bff;
-    border-color: #0056b3;
-    color: white; /* Rende bianco il testo normale dentro la label */
+    font-weight: bold;
 }
 
-#answer-options input[type="radio"]:checked + label h2,
-#answer-options input[type="radio"]:checked + label h1 {
-    color: white; /* Rende bianchi anche gli header dentro la label */
-}
-
-/* NUOVO: Stili per l'indicatore di progresso */
+/* Indicatore di progresso */
 #quiz-progress-indicator {
     display: flex;
     justify-content: center;
@@ -270,18 +105,12 @@
     border-radius: 50%;
     border: 2px solid #ccc;
     background-color: #ffffff;
-    color: #555;
-    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .progress-btn:hover {
     border-color: #007bff;
-    color: #007bff;
 }
 
 .progress-btn.answered {
@@ -296,7 +125,7 @@
     transform: scale(1.1);
 }
 
-/* CONTENITORE DI NAVIGAZIONE */
+/* Pulsanti di navigazione */
 .quiz-navigation {
     display: flex;
     justify-content: space-between;
@@ -304,36 +133,25 @@
     gap: 15px;
 }
 
-/* 
- * ===================================================================
- *  STILE UNIFICATO E CORRETTO PER I PULSANTI DI NAVIGAZIONE
- *  Questa è l'unica regola che devi avere per questi due pulsanti.
- * ===================================================================
- */
-#prev-question-btn, 
+#prev-question-btn,
 #next-question-btn {
-    /* Colore e aspetto */
-    background-color: #007bff; /* BLU per entrambi */
+    background-color: #0056b3;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    /* Dimensioni e testo */
-    flex: 1; /* <<-- Questa è la chiave: stessa dimensione */
+    flex: 1;
     padding: 12px 20px;
     font-size: 1.1em;
-    text-align: center;
+    transition: background-color 0.3s ease;
 }
 
-#prev-question-btn:hover, 
+#prev-question-btn:hover,
 #next-question-btn:hover {
-    background-color: #0056b3; /* Un blu più scuro al passaggio del mouse */
+    background-color: #004085;
 }
 
-
-/* PULSANTE FINISH QUIZ */
+/* Pulsante Finish */
 #finish-quiz-btn {
     background-color: #28a745;
     color: white;
@@ -355,4 +173,89 @@
     background-color: #a9a9a9;
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+/* Sezione dei risultati */
+#quiz-results {
+    margin-top: 20px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+#final-score,
+#execution-code,
+#time-taken {
+    font-weight: bold;
+}
+
+#detailed-results {
+    margin-top: 30px;
+    text-align: left;
+}
+
+#download-pdf-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+#download-pdf-btn:hover {
+    background-color: #5a6268;
+}
+
+/* =================================================================== */
+/* SOLUZIONE PROBLEMA COLORI: REGOLE PIÙ SPECIFICHE */
+/* Queste ora vinceranno contro gli stili di default di Bootstrap. */
+/* =================================================================== */
+
+#quiz-container .question-block {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+#quiz-container .question-block h4 {
+    color: #004085;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+#quiz-container .correct {
+    color: #155724 !important; /* Verde scuro */
+    font-weight: bold !important;
+    background-color: #d4edda !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+    /* Rimuoviamo la necessità di !important se possibile, ma per ora lo lasciamo per garantire la visibilità */
+}
+
+#quiz-container .incorrect {
+    color: #721c24 !important; /* Rosso scuro */
+    font-weight: bold !important;
+    background-color: #f8d7da !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
+}
+
+#quiz-container .explanation {
+    background-color: #fff3cd !important;
+    border-left: 4px solid #ffeeba !important;
+    padding: 12px !important;
+    margin-top: 15px !important;
+    font-style: italic !important;
+    color: #856404 !important;
+}
+
+#quiz-container .explanation strong {
+    font-style: normal;
+    font-weight: 900;
 }

@@ -1,35 +1,63 @@
-/* Importa i font Inter e Playfair Display da Google Fonts. */
-/* ASSICURATI CHE QUESTE RIGHE SIANO LE PRIMISSIME NEL TUO FILE style.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+/*
+===================================================================
+ STILI GLOBALI PER L'ACCESSIBILITÀ DELLA TASTIERA
+ Aggiungi questo blocco alla fine del tuo file styles.css
+===================================================================
+*/
+
+/*
+ * Usa :focus-visible per mostrare l'outline solo durante la navigazione
+ * da tastiera (con TAB) e non al click del mouse.
+ * Questo è lo standard moderno e raccomandato per l'accessibilità.
+*/
+:focus-visible {
+  /*
+   * Scegli una delle opzioni qui sotto (togli il commento a quella che preferisci)
+   * e commenta o cancella le altre.
+  */
+
+  /* Opzione 1: Colore ad alto contrasto (MOLTO RACCOMANDATO) */
+  /* Un colore oro/arancione si nota bene sia su sfondi chiari che scuri. */
+  outline: 3px solid #E09300 !important; 
+
+  /* Opzione 2: Stile tratteggiato in tema con il sito */
+  /* Usa uno dei colori blu scuri del tuo sito. */
+  /* outline: 2px dashed #1a4f6d; */
+
+  /* Opzione 3: Stile in tema con il colore "accent" del sito */
+  /* Usa il verde che hai già per i bottoni. */
+  /* outline: 3px solid #6FD299; */
+
+
+  /* Proprietà aggiuntive per migliorare la visibilità */
+  outline-offset: 2px;  /* Aggiunge un piccolo spazio tra l'elemento e l'outline */
+  border-radius: 4px;   /* Arrotonda gli angoli dell'outline (migliora l'estetica) */
+}
 
 /* Regola universale: applica il font di base a TUTTI gli elementi. */
-/* Questo serve come fallback generale, ma le regole più specifiche prevarranno. */
 * {
-    font-family: 'Inter', sans-serif; /* Font di base più serio */
+    font-family: Arial, Helvetica, sans-serif; /* MODIFICATO: Impostato Arial */
 }
 
 body, html {
-    margin: 0; /* Rimuove i margini predefiniti dal body e html */
-    padding: 0; /* Rimuove il padding predefinito dal body e html */
-    /* Imposta il font principale per tutto il documento, usando !important per forzare l'applicazione */
-    font-family: 'Inter', sans-serif !important; /* Font di base più serio */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif !important; /* MODIFICATO: Impostato Arial */
     background-color: #f8f9fa;
-    line-height: 1.6; /* Migliora la leggibilità del testo generale */
-    color: #333; /* Colore del testo di base per una migliore leggibilità */
+    line-height: 1.6;
+    color: #333;
 }
 
-/* Applica un font diverso e più impattante per i titoli */
+/* MODIFICATO: Anche i titoli ora usano Arial per coerenza con la richiesta. */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif !important; /* Font per i titoli */
-    font-weight: 700; /* Assicura che i titoli siano in grassetto */
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: 700;
 }
 
-/* Le seguenti regole specifiche per elementi sono ora meno necessarie grazie al selettore universale, */
-/* ma le manteniamo per una chiara intenzione e per catturare eventuali casi limite. */
+
 p, a, li, span, div,
 input, textarea, select, button {
-    font-family: 'Inter', sans-serif; /* Applica il font Inter a questi elementi */
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header-top, .header-mistra {
@@ -41,8 +69,8 @@ input, textarea, select, button {
     background-color: #2b6ca3;
     padding-top: 1.25rem;
     padding-bottom: 1.25rem;
-    margin-bottom: 0 !important; /* Assicurati che la navbar non abbia un margine inferiore, forzato */
-    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
+    margin-bottom: 0 !important;
+    line-height: 1 !important;
 }
 
 .navbar-custom .nav-link, .navbar-custom .navbar-brand {
@@ -51,14 +79,13 @@ input, textarea, select, button {
     font-size: 1.25rem;
     padding-left: 4rem;
     padding-right: 4rem;
-    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
+    line-height: 1 !important;
 }
 
 .navbar-custom .nav-link:hover {
     color: #d1e7ff !important;
 }
 
-/* Stile per la voce del menu selezionata (attiva) */
 .navbar-custom .nav-item.active .nav-link,
 .navbar-custom .nav-item.active .nav-link:hover {
     background-color: #1a4f6d;
@@ -85,13 +112,11 @@ input, textarea, select, button {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
-/* Stili per allineare la navbar al centro */
 #navbarCMS {
     justify-content: center !important;
     margin-left: 0;
 }
 
-/* Stili per i dropdown al passaggio del mouse (hover) */
 @media (min-width: 992px) {
     .navbar-custom .nav-item.dropdown:hover .dropdown-menu {
         display: block;
@@ -101,53 +126,46 @@ input, textarea, select, button {
     }
 }
 
-/* Stile per la sezione del titolo con sfondo blu scuro */
 .title-section-bg {
-    background-color: #1a4f6d; /* Colore di sfondo scuro come nell'immagine */
-    color: white; /* Testo bianco */
-    margin-top: 0 !important; /* Rimuove qualsiasi margine superiore predefinito, forzato */
-    padding-top: 1.25rem; /* Aggiunto padding per il titolo */
-    padding-bottom: 1.25rem; /* Aggiunto padding per il titolo */
-    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
-    text-align: center; /* Centra il testo all'interno della sezione */
-    max-width: 1080px; /* Limita la larghezza massima del blocco */
-    margin-left: auto; /* Centra il blocco orizzontalmente */
-    margin-right: auto; /* Centra il blocco orizzontalmente */
-    box-sizing: border-box; /* Assicura che padding e border siano inclusi nella larghezza */
+    background-color: #1a4f6d;
+    color: white;
+    margin-top: 0 !important;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    line-height: 1 !important;
+    text-align: center;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
 }
 
-/* Assicurati che l'h2 all'interno non abbia margini superiori o inferiori */
 .title-section-bg h2 {
-    margin-top: 0 !important; /* Forzato */
-    margin-bottom: 0 !important; /* Forzato */
-    width: 100%; /* Assicura che l'h2 occupi tutta la larghezza disponibile */
-    line-height: 1 !important; /* Rimuove lo spazio extra dovuto all'altezza della linea */
-    word-wrap: break-word; /* Permette alle parole lunghe di andare a capo */
-    word-break: break-word; /* Forze il taglio delle parole se necessario */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    width: 100%;
+    line-height: 1 !important;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
-/* Rimuove il margine superiore dal container principale del contenuto */
 .container.mt-4 {
     margin-top: 0 !important;
 }
 
-/*
- * Styles for Django CMS Generated Buttons (e.g., for plugins/forms)
- * These styles target anchor tags with Bootstrap-like button classes.
- */
 a.btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
     padding: 0.5rem 1.5rem;
-    border-radius: 9999px; /* Fully rounded */
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     transition: background-color 0.2s, color 0.2s;
     text-decoration: none;
     cursor: pointer;
-    font-style: italic; /* Matches "Indietro" button style */
-    border: none; /* Remove default button borders */
+    font-style: italic;
+    border: none;
 }
 
 a.btn-primary {
@@ -200,38 +218,33 @@ table {
     font-size: 0.875rem;
 }
 
-/* Specific styles for the content from the image */
 .content-section {
     padding: 1.5rem;
     background-color: #fff;
     box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
     border-radius: 0.25rem;
     margin-bottom: 2rem;
-
-    /* --- Aggiunte qui --- */
-    max-width: 1080px; /* Imposta la larghezza massima desiderata */
-    margin-left: auto; /* Centra l'elemento orizzontalmente */
-    margin-right: auto; /* Centra l'elemento orizzontalmente */
-    /* Puoi anche scrivere solo: margin: 0 auto 2rem auto; per consolidare */
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .content-section p {
-    margin-bottom: 1rem; /* Spacing between paragraphs */
-    line-height: 1.6; /* Better readability */
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }
 
 .content-section ul {
-    list-style-type: disc; /* Default bullet points for lists */
-    padding-left: 1.5rem; /* Indent for list items */
+    list-style-type: disc;
+    padding-left: 1.5rem;
     margin-bottom: 1rem;
 }
 
 .content-section ul li {
-    margin-bottom: 0.5rem; /* Spacing between list items */
+    margin-bottom: 0.5rem;
     line-height: 1.6;
 }
 
-/* Rimosso il commento e applicato il font anche agli h3 */
 .content-section h3 {
     color: #1a4f6d;
     margin-top: 1.5rem;
@@ -239,17 +252,17 @@ table {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: left;
-    font-family: 'Playfair Display', serif; /* Applica il font dei titoli anche agli h3 */
+    /* La regola font-family qui non è più necessaria grazie alla regola globale per h1-h6 */
 }
 
 
 .highlight-text {
-    font-weight: bold; /* Make specific text bold */
+    font-weight: bold;
 }
 
 .important-note {
-    background-color: #e6f7ff; /* Light blue background for the note section */
-    border-left: 5px solid #2b6ca3; /* Blue border on the left */
+    background-color: #e6f7ff;
+    border-left: 5px solid #2b6ca3;
     padding: 1rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
@@ -257,12 +270,12 @@ table {
 }
 
 .important-note p {
-    margin-bottom: 0; /* Remove extra margin for paragraphs inside the note */
+    margin-bottom: 0;
 }
 
 .info-box {
-    background-color: #f0f8ff; /* Very light blue for information boxes */
-    border: 1px solid #cceeff; /* Light blue border */
+    background-color: #f0f8ff;
+    border: 1px solid #cceeff;
     padding: 1rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
@@ -272,75 +285,61 @@ table {
     margin-bottom: 0;
 }
 
-/* Adjustments for the main content container */
 main .container {
-    padding-top: 2rem; /* Add padding to the top of the main content area */
+    padding-top: 2rem;
 }
 
-/* Video */
 .responsive-video {
-    width: 100%;       /* Il video occupa tutta la larghezza disponibile del suo contenitore */
-    height: auto;      /* L'altezza si adatta proporzionalmente alla larghezza per mantenere l'aspect ratio */
-    max-width: 640px;  /* (Opzionale) Limita la larghezza massima al suo valore originale */
-                       /* Questo evita che il video diventi troppo grande su schermi enormi */
+    width: 100%;
+    height: auto;
+    max-width: 640px;
 }
 
-/* Tabella per stringhe */
-/* Stile per i titoli delle UOC */
 .department-list h2 {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
-    color: #333; /* O un colore che preferisci */
-    border-bottom: 1px solid #eee; /* Una linea sotto il titolo */
+    color: #333;
+    border-bottom: 1px solid #eee;
     padding-bottom: 0.5rem;
 }
 
-/* Contenitore Flexbox per le persone in colonne */
 .person-grid {
-    display: flex;             /* Abilita Flexbox */
-    flex-wrap: wrap;           /* Permette agli elementi di andare a capo su più righe */
-    gap: 1.5rem;               /* Spazio tra le card (sia orizzontale che verticale) */
-    justify-content: flex-start; /* Allinea gli elementi all'inizio (sinistra) */
-    /* Se volessi centrarli: justify-content: center; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: flex-start;
 }
 
-/* Stile per ogni singola "card" persona */
 .person-card {
-    flex: 1 1 calc(33.333% - 1rem); /* 33.333% per 3 colonne, -1rem per compensare il gap */
-    min-width: 250px;             /* Larghezza minima per evitare che le card diventino troppo strette su schermi piccoli */
-    box-sizing: border-box;       /* Include padding e border nel calcolo della larghezza */
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+    box-sizing: border-box;
     padding: 1rem;
-    background-color: #f9f9f9;    /* Uno sfondo leggero per le card */
+    background-color: #f9f9f9;
     border-radius: 0.25rem;
-    /* Puoi aggiungere un box-shadow qui se vuoi che le card si distinguano */
-    /* box-shadow: 0 0.0625rem 0.125rem rgba(0,0,0,.05); */
 }
 
-/* Stile per i nomi e i ruoli all'interno della card */
 .person-card h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-size: 1.15rem; /* Rendi il nome leggermente più grande */
-    color: #0056b3; /* Un colore per i nomi */
+    font-size: 1.15rem;
+    color: #0056b3;
 }
 
 .person-card p {
     margin-bottom: 0;
-    font-size: 0.95rem; /* Rendi il ruolo leggermente più piccolo */
+    font-size: 0.95rem;
     color: #555;
 }
 
-/* Media Query per la Responsività */
-/* Su schermi più piccoli (tablet e cellulari), mostra 2 colonne */
-@media (max-width: 992px) { /* Esempio: schermi più piccoli di 992px */
+@media (max-width: 992px) {
     .person-card {
-        flex: 1 1 calc(50% - 0.75rem); /* 2 colonne (50%), -0.75rem per compensare il gap */
+        flex: 1 1 calc(50% - 0.75rem);
     }
 }
 
-/* Su schermi molto piccoli (cellulari), mostra 1 colonna */
-@media (max-width: 576px) { /* Esempio: schermi più piccoli di 576px */
+@media (max-width: 576px) {
     .person-card {
-        flex: 1 1 100%; /* 1 colonna (100%) */
+        flex: 1 1 100%;
     }
 }
