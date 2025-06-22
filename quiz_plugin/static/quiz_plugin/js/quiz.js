@@ -141,27 +141,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
+    //     Browser: Fa una piccola richiesta di rete (leggerissima).
+    // Server: Fa tutto il lavoro di conversione usando la sua potenza di calcolo.
+    // Browser: Rimane veloce e reattivo, riceve un file pronto e lo salva.
     if (downloadPdfBtn) {
         downloadPdfBtn.addEventListener('click', async () => {
-            if (!latestQuizResults) return;
-            downloadPdfBtn.textContent = 'Generating PDF...';
-            downloadPdfBtn.disabled = true;
-
-            if (typeof html2pdf === 'undefined') {
-                try {
-                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
-                } catch (error) {
-                    alert('Could not load PDF library. Please try again.');
-                    downloadPdfBtn.textContent = 'Download PDF';
-                    downloadPdfBtn.disabled = false;
-                    return;
-                }
+            // 1. Controlla se abbiamo i risultati del quiz da inviare
+            if (!latestQuizResults) {
+                console.error("Risultati del quiz non disponibili per il download.");
+                return;
             }
 
+            // 2. Fornisce un feedback all'utente e disabilita il pulsante
+            downloadPdfBtn.textContent = 'Generazione PDF in corso...';
+            downloadPdfBtn.disabled = true;
+
             try {
+                // 3. Chiama l'API del backend che genera il PDF con WeasyPrint
                 const response = await fetch(`/${languageCode}/quiz/api/results/${latestQuizResults.execution_code}/download_pdf/`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken') // Il tuo helper per il token CSRF
+                    },
+                    // Invia i dati necessari al backend per popolare il template del PDF
                     body: JSON.stringify({
                         final_score: latestQuizResults.score,
                         max_score: latestQuizResults.max_score,
@@ -169,25 +172,40 @@ document.addEventListener('DOMContentLoaded', () => {
                         min_score: latestQuizResults.min_score
                     })
                 });
+
+                // 4. Se il backend ha risposto correttamente (con il file PDF)
                 if (response.ok) {
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
+                    const blob = await response.blob(); // Ottiene il file come oggetto Blob
+                    const url = window.URL.createObjectURL(blob); // Crea un URL locale per il file
+
+                    // Crea un link temporaneo e invisibile per avviare il download
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `quiz_results_${latestQuizResults.execution_code}.pdf`;
-                    a.click();
+                    a.download = `quiz_results_${latestQuizResults.execution_code}.pdf`; // Nome del file
+                    document.body.appendChild(a);
+                    a.click(); // Simula il click sul link
+
+                    // Pulisce l'URL e il link temporaneo dopo il download
+                    a.remove();
                     window.URL.revokeObjectURL(url);
+
                 } else {
-                    alert('Failed to download PDF.');
+                    // Se il backend ha restituito un errore
+                    console.error('Errore dal server durante la generazione del PDF:', response.statusText);
+                    alert('Impossibile generare il PDF. Riprova più tardi.');
                 }
             } catch (error) {
-                alert('An error occurred while downloading the PDF.');
+                // Se c'è stato un errore di rete o altro
+                console.error('Errore di rete durante il download del PDF:', error);
+                alert('Si è verificato un errore di rete. Controlla la connessione e riprova.');
             } finally {
+                // 5. In ogni caso (successo o fallimento), ripristina il pulsante
                 downloadPdfBtn.textContent = 'Download PDF';
                 downloadPdfBtn.disabled = false;
             }
         });
     }
+
     
     // --- Core Functions ---
     function saveCurrentAnswer() {
@@ -208,9 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = document.createElement('button');
             btn.textContent = index + 1;
             btn.classList.add('progress-btn');
-            // ===================================================================
-            // CORREZIONE #3: ANCHE I PULSANTI NUMERICI CAMBIANO SOLO DOMANDA
-            // ===================================================================
             btn.addEventListener('click', () => {
                 currentQuestionIndex = index;
                 renderQuestion();
@@ -319,18 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         quizResultsDiv.style.display = 'block';
     }
     
-    // --- Utility Functions ---
-    function loadScript(src) {
-        return new Promise((resolve, reject) => {
-            if (document.querySelector(`script[src="${src}"]`)) return resolve();
-            const script = document.createElement('script');
-            script.src = src;
-            script.async = true;
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.append(script);
-        });
-    }
+
 
     function getCookie(name) {
         let value = "; " + document.cookie;

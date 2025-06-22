@@ -7,6 +7,7 @@
       {# data-bs-toggle="dropdown" è mantenuto per il comportamento mobile #}
       <a class="nav-link dropdown-toggle text-white" href="{{ child.get_absolute_url }}" id="menu{{ forloop.counter }}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ child.get_menu_title }}
+         <i class="fas fa-angle-down ms-1"></i>
       </a>
       <ul class="dropdown-menu">
         {# Aggiunto un link per la pagina genitore all'interno del dropdown per l'accesso diretto su mobile #}
