@@ -9,20 +9,26 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.template.loader import render_to_string
+from django.db.models import Max
 from weasyprint import HTML
 
 from .models import Test, QuestionInTest, Question, Answer, Sex, TestExecution, GivenAnswer
 
 logger = logging.getLogger(__name__)
 
+# Esenta questa vista dal controllo CSRF, dato che i dati vengono inviati da JS.
 @csrf_exempt
+# Permette solo richieste di tipo POST.
 @require_POST
 def download_quiz_pdf(request, execution_code=None):
+    """Genera e restituisce un PDF con i risultati del quiz."""
     try:
+        # Carica i dati dei risultati inviati dal frontend.
         data = json.loads(request.body)
         score = data.get('final_score', 0)
         min_score = data.get('min_score', 1)
 
+        # Prepara il contesto da passare al template HTML del PDF.
         context = {
             'execution_code': execution_code,
             'score': score,
@@ -31,10 +37,13 @@ def download_quiz_pdf(request, execution_code=None):
             'pass_status': "Passed" if float(score) >= float(min_score) else "Failed"
         }
         
+        # Renderizza il template HTML in una stringa.
         html_string = render_to_string('quiz_plugin/results_pdf.html', context)
+        # Prepara una risposta HTTP con il tipo di contenuto corretto per un PDF.
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="quiz_results_{execution_code}.pdf"'
         
+        # WeasyPrint converte la stringa HTML in un PDF e lo scrive nella risposta.
         HTML(string=html_string).write_pdf(response)
         return response
     except Exception as e:
@@ -43,12 +52,15 @@ def download_quiz_pdf(request, execution_code=None):
 
 @require_GET
 def get_sex_options(request):
+    """Restituisce le opzioni per il sesso (es. Maschio, Femmina) in formato JSON."""
     sex_options = list(Sex.objects.all().order_by('id').values('id', 'name'))
     return JsonResponse({'sex_options': sex_options})
 
 @require_GET
 def get_random_test_id(request):
+    """Seleziona un test casuale dal database e ne restituisce i dettagli base."""
     try:
+        # '?' in order_by() seleziona una riga casuale.
         random_test = Test.objects.order_by('?').first()
         if not random_test:
             return JsonResponse({'error': 'No tests available.'}, status=404)
@@ -64,21 +76,24 @@ def get_random_test_id(request):
 
 @require_GET
 def get_random_test_questions(request, test_id):
+    """Dato un ID di test, restituisce le sue domande e risposte in ordine casuale."""
     try:
         test = get_object_or_404(Test, id=test_id)
+        # caricamento di tutte le risposte in una sola volta.
         questions = Question.objects.filter(test=test).prefetch_related('answers')
         
         questions_data = []
         for question in list(questions):
+            # Prepara la lista di risposte per la domanda corrente.
             answers = [{'id': ans.id, 'text': ans.text} for ans in question.answers.all()]
-            random.shuffle(answers)
+            random.shuffle(answers) # Mescola le risposte.
             questions_data.append({
                 'id': question.id,
                 'text': question.text,
                 'answers': answers
             })
         
-        random.shuffle(questions_data)
+        random.shuffle(questions_data) # Mescola le domande.
         return JsonResponse({'questions': questions_data})
     except Exception as e:
         logger.exception("Error getting test questions: %s", e)
@@ -105,16 +120,20 @@ def submit_results(request):
         execution_code = datetime.now().strftime('%Y%m%d%H%M%S') + ''.join(random.choices('ABCDEFGHIJKLMNOPQRSTUVWXYZ', k=3))
 
         test_execution = TestExecution.objects.create(
-            id=execution_code,
-            age=age,
-            id_sex=sex,
-            id_test=test,
-            IP=request.META.get('REMOTE_ADDR'),
-            duration=timedelta(seconds=duration_seconds)
+            id=execution_code, age=age, id_sex=sex, id_test=test,
+            IP=request.META.get('REMOTE_ADDR'), duration=timedelta(seconds=duration_seconds)
         )
 
+        questions_in_test = Question.objects.filter(test=test)
+        
+        # calcolo del punteggio massimo TOTALE del test
+        max_scores_per_question_qs = Answer.objects.filter(id_question__in=questions_in_test).values('id_question').annotate(max_score_for_q=Max('score'))
+        max_possible_score = sum(item['max_score_for_q'] for item in max_scores_per_question_qs if item['max_score_for_q'] > 0)
+        
+        # mappa {question_id: max_score} per un facile accesso
+        max_score_map = {item['id_question']: item['max_score_for_q'] for item in max_scores_per_question_qs}
+
         total_score = 0
-        max_possible_score = 0
         detailed_answers = []
 
         all_given_answers_pks = [ua['answer_id'] for ua in user_answers]
@@ -131,28 +150,40 @@ def submit_results(request):
                 id_answer=answer,
                 id_question=answer.id_question
             )
-            total_score += answer.score
-            is_correct = (answer.score == 1)
             
-            if Answer.objects.filter(id_question=answer.id_question, score=1).exists():
-                max_possible_score += 1
+            total_score += answer.score
+
+            # Una risposta è "corretta" se il suo punteggio è uguale al massimo
+            # punteggio possibile per QUELLA domanda (e se è > 0).
+            # max_score_for_this_question = max_score_map.get(answer.id_question.id, 0)
+
+            # Una ripsota è "corretta" se il suo punteggio è maggiore di 0
+            is_correct = (answer.score > 0)
+            # ===================================================================
             
             detailed_answers.append({
                 'question_text': answer.id_question.text,
                 'given_answer_text': answer.text,
                 'is_correct': is_correct,
-                'correction_text': answer.correction if not is_correct else None
+                'correction_text': answer.correction if not is_correct and answer.correction else None
             })
 
+        # Aggiorna il punteggio
         test_execution.score = total_score
         test_execution.save()
 
+        # Arrotondiamo i valori a 2 cifre decimali prima di inviarli al frontend
+        formatted_score = round(total_score, 2)
+        formatted_max_score = round(max_possible_score, 2)
+
+
         return JsonResponse({
             'execution_code': execution_code,
-            'score': total_score,
-            'max_score': max_possible_score,
+            'score': formatted_score,          
+            'max_score': formatted_max_score, 
             'detailed_answers': detailed_answers,
-            'min_score': float(test.min_score)
+            'min_score': float(test.min_score),
+            'duration': duration_seconds 
         })
     except Exception as e:
         logger.exception("Error submitting results: %s", e)

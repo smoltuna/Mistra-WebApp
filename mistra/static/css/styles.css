@@ -82,6 +82,10 @@ input, textarea, select, button {
     line-height: 1 !important;
 }
 
+.navbar-custom .nav-link.dropdown-toggle::after {
+    display: none;
+}
+
 .navbar-custom .nav-link:hover {
     color: #d1e7ff !important;
 }

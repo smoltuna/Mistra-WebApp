@@ -29,15 +29,11 @@ SECRET_KEY = '&$gg*54jvct&7^7@dq^t&=240-34td%vxwi2)k2&!ffs^c(v*5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Host/domini permessi a servire il sito. '*' permette a tutti (per sviluppo).
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
-
-
-
-
-
+# URL principale del progetto.
 ROOT_URLCONF = 'mistra.urls'
 
 
@@ -86,21 +82,28 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+# URL per i file statici.
 STATIC_URL = '/static/'
+# URL per i file media caricati dagli utenti.
 MEDIA_URL = '/media/'
+# Percorso nel filesystem per i file media.
 MEDIA_ROOT = os.path.join(DATA_DIR, 'media')
+# Percorso dove `collectstatic` raccoglierà tutti i file statici.
 STATIC_ROOT = os.path.join(DATA_DIR, 'static')
 
+# Cartelle aggiuntive dove Django cerca file statici.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mistra', 'static'),
 )
+# ID del sito corrente, richiesto da Django-CMS.
 SITE_ID = 1
 
 
+# Configurazione dei template.
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'mistra', 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'mistra', 'templates'),], 
         'OPTIONS': {
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
@@ -125,11 +128,10 @@ TEMPLATES = [
 ]
 
 
+# Middleware: logica che processa richieste/risposte. L'ordine è importante.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    #'django.middleware.gzip.GZipMiddleware'
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    
+    'django.middleware.gzip.GZipMiddleware',
     'cms.middleware.utils.ApphookReloadMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -144,6 +146,7 @@ MIDDLEWARE = [
     'cms.middleware.language.LanguageCookieMiddleware'
 ]
 
+# Elenco di tutte le app installate nel progetto.
 INSTALLED_APPS = [
     'djangocms_admin_style',
     'django.contrib.auth',
@@ -183,51 +186,46 @@ INSTALLED_APPS = [
     'djangocms_style',
     'djangocms_googlemap',
     'djangocms_video',
-    'mistra',
-    'quiz_plugin',
-    
-    
+    'mistra', # App principale del progetto.
+    'quiz_plugin', # App per la funzionalità del quiz.
 ]
 
+
 LANGUAGES = (
-    ## Customize this
+
     ('it', gettext('it')),
-    # ('en', gettext('en'))
+
 )
 
 CMS_SITE_MODEL = 'cms.models.site.CMSSite'
-TEXT_ADDITIONAL_TAGS = ('iframe',)
+TEXT_ADDITIONAL_TAGS = ('iframe',) # Permette l'uso di <iframe> nell'editor di testo.
 TEXT_ADDITIONAL_ATTRIBUTES = ('scrolling', 'allowfullscreen', 'frameborder', 'src', 'height', 'width')
+
+
 CMS_LANGUAGES = {
-    1: [
+    1: [ 
         {
             'code': 'it',
-            'name': _('Italiano'), # Usiamo _() per nomi traducibili
+            'name': _('Italiano'), 
             'redirect_on_fallback': True,
             'public': True,
             'hide_untranslated': False,
         },
-        # {
-        #     'code': 'en',
-        #     'name': _('English'), # Usiamo _() per nomi traducibili
-        #     'redirect_on_fallback': True,
-        #     'public': True,
-        #     'hide_untranslated': False,
-        # },
     ],
-    'default': {
+    'default': { 
         'redirect_on_fallback': True,
         'public': True,
         'hide_untranslated': False,
     },
 }
 
+# Elenco dei template disponibili per le pagine di Django-CMS.
 CMS_TEMPLATES = (
-    ## Customize this
     ('fullwidth.html', 'Fullwidth'),
     ('sidebar_left.html', 'Sidebar Left'),
     ('sidebar_right.html', 'Sidebar Right')
 )
+
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
@@ -236,26 +234,25 @@ CMS_PERMISSION = True
 CMS_PLACEHOLDER_CONF = {
 }
 
+# Configurazione del database.
 DATABASES = {
     'default': {
-        'CONN_HEALTH_CHECKS': 'False',
+        'CONN_HEALTH_CHECKS': 'False', 
         'CONN_MAX_AGE': 0,
         'DISABLE_SERVER_SIDE_CURSORS': 'False',
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3', 
         'HOST': 'localhost',
-        'NAME': 'project.db',
+        'NAME': 'project.db', 
         'PASSWORD': '',
         'PORT': '',
         'USER': ''
     }
 }
 
+# Processori per la libreria easy_thumbnails per creare miniature delle immagini.
 THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.colorspace',
     'easy_thumbnails.processors.autocrop',
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters'
 )
-
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

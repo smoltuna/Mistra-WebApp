@@ -1,4 +1,3 @@
-/* Stili principali per il contenitore del quiz */
 #quiz-container {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -60,7 +59,7 @@
     background-color: #157347;
 }
 
-/* Sezione delle domande */
+
 #answer-options {
     margin-bottom: 25px;
 }
@@ -90,8 +89,8 @@
     font-weight: bold;
 }
 
-/* Indicatore di progresso */
-#quiz-progress-indicator {
+
+#quiz-navigation-indicator {
     display: flex;
     justify-content: center;
     gap: 8px;
@@ -209,11 +208,6 @@
     background-color: #5a6268;
 }
 
-/* =================================================================== */
-/* SOLUZIONE PROBLEMA COLORI: REGOLE PIÙ SPECIFICHE */
-/* Queste ora vinceranno contro gli stili di default di Bootstrap. */
-/* =================================================================== */
-
 #quiz-container .question-block {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
@@ -235,7 +229,6 @@
     background-color: #d4edda !important;
     padding: 3px 8px !important;
     border-radius: 4px !important;
-    /* Rimuoviamo la necessità di !important se possibile, ma per ora lo lasciamo per garantire la visibilità */
 }
 
 #quiz-container .incorrect {
