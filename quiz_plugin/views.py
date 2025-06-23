@@ -16,6 +16,7 @@ from .models import Test, QuestionInTest, Question, Answer, Sex, TestExecution, 
 
 logger = logging.getLogger(__name__)
 
+
 # Esenta questa vista dal controllo CSRF, dato che i dati vengono inviati da JS.
 @csrf_exempt
 # Permette solo richieste di tipo POST.
@@ -52,7 +53,7 @@ def download_quiz_pdf(request, execution_code=None):
 
 @require_GET
 def get_sex_options(request):
-    """Restituisce le opzioni per il sesso (es. Maschio, Femmina) in formato JSON."""
+    """Restituisce le opzioni per il sesso in formato JSON."""
     sex_options = list(Sex.objects.all().order_by('id').values('id', 'name'))
     return JsonResponse({'sex_options': sex_options})
 
@@ -172,10 +173,9 @@ def submit_results(request):
         test_execution.score = total_score
         test_execution.save()
 
-        # Arrotondiamo i valori a 2 cifre decimali prima di inviarli al frontend
+        # Arrotondiamo i valori a 2 cifre decimali
         formatted_score = round(total_score, 2)
         formatted_max_score = round(max_possible_score, 2)
-
 
         return JsonResponse({
             'execution_code': execution_code,

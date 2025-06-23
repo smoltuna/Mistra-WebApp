@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
-#editor HTML.
+#editor HTML
 from djangocms_text_ckeditor.widgets import TextEditorWidget
 
 #Modelli necessari per registrarli nell'admin.

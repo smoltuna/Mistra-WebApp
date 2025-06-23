@@ -8,23 +8,23 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext
 
 # =============================================================================
-# MODELLI DI BASE (Le fondamenta del quiz)
+# MODELLI DI BASE 
 # =============================================================================
 
 class Category(models.Model):
     """
-    Rappresenta una categoria per le domande (es. "Prevenzione", "Sintomi").
+    Rappresenta una categoria per le domande.
     Serve a raggruppare le domande per argomento.
     """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True, verbose_name=_("Category Name"))
 
     class Meta:
-        verbose_name_plural = _("Categories") # Corregge il plurale nell'admin (da "Categorys" a "Categories")
+        verbose_name_plural = _("Categories") 
         ordering = ['name'] # Ordina le categorie alfabeticamente di default
 
     def __str__(self):
-        # Rappresentazione testuale dell'oggetto (es. nell'admin di Django).
+        # Rappresentazione testuale dell'oggetto.
         return self.name
 
 class Question(models.Model):
@@ -51,12 +51,11 @@ class Answer(models.Model):
     """
     id = models.AutoField(primary_key=True)
     text = models.TextField(verbose_name=_("Answer Text (HTML)"))
-    # DecimalField è la scelta giusta per punteggi precisi.
     score = models.DecimalField(
         max_digits=3, 
         decimal_places=2, 
         verbose_name=_("Score (-1.00 to 1.00)"),
-        # I validatori assicurano che nessuno possa inserire un punteggio non valido (es. 5.0).
+        # I validatori assicurano che nessuno possa inserire un punteggio non valido.
         validators=[MinValueValidator(-1.00), MaxValueValidator(1.00)]
     )
     # Spiegazione da mostrare se l'utente sceglie questa risposta e non è corretta.
@@ -72,7 +71,7 @@ class Answer(models.Model):
 
 
 # =============================================================================
-# MODELLI PER I TEST (Struttura che raggruppa le domande)
+# MODELLI PER I TEST
 # =============================================================================
 
 class Test(models.Model):
@@ -121,8 +120,7 @@ class QuestionInTest(models.Model):
 
 class Sex(models.Model):
     """
-    Modello semplice per memorizzare le opzioni per il sesso,
-    gestibili dall'amministratore.
+    Modello per memorizzare le opzioni per il sesso.
     """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, unique=True, verbose_name=_("Sex Description"))
@@ -135,11 +133,10 @@ class Sex(models.Model):
 
 class TestExecution(models.Model):
     """
-
     Registra una singola esecuzione di un test da parte di un utente.
-    Contiene i dati demografici, il punteggio finale e le informazioni sulla revisione medica.
+    Contiene i dati personali, il punteggio finale e le informazioni sulla revisione medica.
     """
-    # Usiamo un CharField per il codice univoco perché contiene lettere e numeri.
+    #CharField per il codice univoco perché contiene lettere e numeri.
     id = models.CharField(primary_key=True, max_length=20, unique=True, verbose_name=_("Execution Code"))
     # auto_now_add=True imposta automaticamente la data e l'ora alla creazione dell'oggetto.
     execution_time = models.DateTimeField(auto_now_add=True)
@@ -153,7 +150,8 @@ class TestExecution(models.Model):
     IP = models.GenericIPAddressField(blank=True, null=True)
     # DurationField è perfetto per memorizzare intervalli di tempo, come la durata di un test.
     duration = models.DurationField(blank=True, null=True)
-    
+
+
     # Campi per la revisione da parte del medico
     revision_date = models.DateTimeField(blank=True, null=True)
     note = models.TextField(blank=True, null=True)
@@ -187,8 +185,7 @@ class GivenAnswer(models.Model):
 class QuizPluginModel(CMSPlugin):
     """
     Modello che permette di inserire il quiz come un plugin in una pagina di Django-CMS.
-    Eredita da CMSPlugin e non ha bisogno di campi aggiuntivi per questa implementazione,
-    perché il test viene scelto casualmente.
+    Eredita da CMSPlugin.
     """
     def __str__(self):
         # Testo mostrato nell'interfaccia di Django-CMS per identificare il plugin.

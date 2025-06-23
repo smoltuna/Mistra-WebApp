@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * Carica le opzioni per il sesso e i dettagli di un test casuale.
      */
     async function initializeQuizPlugin() {
-        await getSexOptions();
         await loadRandomTestDetails();
+        await getSexOptions();
     }
 
     /**
@@ -193,10 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
-     * Gestisce il download del PDF.
-     * NOTA PER LO STUDIO: Questa è un'ottima implementazione di una feature complessa.
-     * Il browser fa solo una piccola richiesta (leggera), mentre il server fa tutto il lavoro
-     * pesante di creare il PDF. Questo mantiene il sito veloce e reattivo.
+     * Gestione download del PDF.
+     * Il browser fa solo richiesta, il server crea e restituisce il PDF
      */
     if (downloadPdfBtn) {
         downloadPdfBtn.addEventListener('click', async () => {
@@ -210,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // Chiama l'API del backend che genera il PDF (WeasyPrint).
-                // Richiesta POST -> inviamo dati al server (i risultati dell'utente) ->
+                // Richiesta POST -> inviamo dati al server (risultati dell'utente) ->
                 // permette di creare un PDF personalizzato.
                 const response = await fetch(`/${languageCode}/quiz/api/results/${latestQuizResults.execution_code}/download_pdf/`, {
                     method: 'POST',

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Quiz Results</title>
     <style>
-        /* Stili di base per un PDF pulito */
+        /* Stili di base PDF */
         @page {
             size: A4;
             margin: 1in;
@@ -48,7 +48,7 @@
             border-radius: 5px;
             padding: 15px;
             margin-top: 15px;
-            page-break-inside: avoid; /* Cerca di non spezzare un blocco tra due pagine */
+            page-break-inside: avoid;
         }
         
         .question-block h4 {
@@ -56,7 +56,6 @@
             margin-bottom: 10px;
         }
 
-        /* Supporto per le immagini! */
         img {
             max-width: 100%;
             height: auto;
@@ -67,12 +66,12 @@
 
         .correct {
             font-weight: bold;
-            color: #155724; /* Verde scuro */
+            color: #155724; 
         }
 
         .incorrect {
             font-weight: bold;
-            color: #721c24; /* Rosso scuro */
+            color: #721c24; 
         }
 
         .explanation {

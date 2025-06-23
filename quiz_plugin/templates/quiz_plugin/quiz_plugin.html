@@ -1,16 +1,16 @@
 {% load cms_tags sekizai_tags static %}
 
 {% addtoblock "css" %}
-    {# Link to your quiz-specific CSS file #}
+    {# Link al file css #}
     <link rel="stylesheet" href="{% static 'quiz_plugin/css/quiz.css' %}">
 {% endaddtoblock %}
 
 {% addtoblock "js" %}
-    {# html2pdf.js è stato rimosso correttamente da qui. #}
+    {# Link al file js #}
     <script src="{% static 'quiz_plugin/js/quiz.js' %}" defer></script>
 {% endaddtoblock %}
 
-{# The main container for your quiz plugin. Pass the current language code to JavaScript. #}
+{# Container principale, cattura la lingua #}
 <div id="quiz-container" data-language-code="{{ LANGUAGE_CODE }}">
     {# Placeholders for dynamically loaded test name and description #}
     <h2 id="quiz-title-display">Loading Quiz...</h2>
@@ -57,7 +57,6 @@
         <p>Tempo totale: <span id="time-taken"></span> secondi</p>
         <div id="pass-fail-message"></div>
         <div id="detailed-results">
-            {# Detailed question results and explanations will be dynamically loaded here #}
         </div>
         <button id="download-pdf-btn">Scarica PDF</button>
     </div>
