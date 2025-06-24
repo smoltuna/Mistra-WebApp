@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from djangocms_text_ckeditor.widgets import TextEditorWidget
 
 #Modelli necessari per registrarli nell'admin.
-from .models import Test, Question, Answer, Category, Sex, QuestionInTest, TestExecution, User
+from .models import Test, Question, Answer, Category, Sex, TestExecution, User
 
 
 # L'admin di Django di default usa un semplice <textarea> per i campi di testo.
@@ -51,13 +51,6 @@ class QuestionAdminForm(forms.ModelForm):
 # Gli "inlines" permettono di modificare modelli correlati direttamente dalla pagina
 # del modello principale. Es: modificare le risposte di una domanda dalla pagina della domanda.
 
-class QuestionInTestInline(admin.TabularInline):
-    """Permette di aggiungere/rimuovere domande a un Test direttamente dalla pagina del Test."""
-    model = QuestionInTest  # Il modello della tabella intermedia.
-    extra = 1  # Mostra uno slot vuoto per aggiungere una nuova domanda.
-    autocomplete_fields = ['id_question'] # Trasforma il menu a tendina delle domande in un campo di ricerca (utile se hai molte domande).
-    exclude = ('order',) # Esclude il campo 'order' dalla modifica manuale (potrebbe essere gestito automaticamente).
-
 class AnswerInline(admin.TabularInline):
     """Permette di aggiungere/modificare le risposte di una Domanda direttamente dalla pagina della Domanda."""
     form = AnswerAdminForm # Form personalizzata con l'editor HTML.
@@ -72,7 +65,7 @@ class TestAdmin(admin.ModelAdmin):
     form = TestAdminForm  # Applica la form con l'editor HTML per la descrizione.
     list_display = ('name', 'min_score') # Colonne da mostrare nella lista dei test.
     search_fields = ('name', 'description') # Abilita la ricerca per nome e descrizione.
-    inlines = [QuestionInTestInline] # Aggiunge l'inline per gestire le domande.
+    filter_horizontal = ('questions',)
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):

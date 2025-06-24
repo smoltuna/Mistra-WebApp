@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.db.models import Max
 from weasyprint import HTML
 
-from .models import Test, QuestionInTest, Question, Answer, Sex, TestExecution, GivenAnswer
+from .models import Test,  Question, Answer, Sex, TestExecution, GivenAnswer
 
 logger = logging.getLogger(__name__)
 
@@ -74,14 +74,16 @@ def get_random_test_id(request):
     except Exception as e:
         logger.exception("Error in get_random_test_id: %s", e)
         return JsonResponse({'error': f'An error occurred: {e}'}, status=500)
-
 @require_GET
 def get_random_test_questions(request, test_id):
     """Dato un ID di test, restituisce le sue domande e risposte in ordine casuale."""
     try:
         test = get_object_or_404(Test, id=test_id)
-        # caricamento di tutte le risposte in una sola volta.
-        questions = Question.objects.filter(test=test).prefetch_related('answers')
+    
+        # Accedi alle domande tramite il manager M2M dell'oggetto 'test'.
+        # `prefetch_related` è un'ottimizzazione per caricare tutte le risposte
+        # associate con una sola query aggiuntiva, invece di una per ogni domanda.
+        questions = test.questions.all().prefetch_related('answers')
         
         questions_data = []
         for question in list(questions):
@@ -97,7 +99,8 @@ def get_random_test_questions(request, test_id):
         random.shuffle(questions_data) # Mescola le domande.
         return JsonResponse({'questions': questions_data})
     except Exception as e:
-        logger.exception("Error getting test questions: %s", e)
+        # Aggiungo il nome della funzione al log per un debug più facile
+        logger.exception("Error in get_random_test_questions: %s", e)
         return JsonResponse({'error': 'An error occurred.'}, status=500)
 
 @csrf_exempt

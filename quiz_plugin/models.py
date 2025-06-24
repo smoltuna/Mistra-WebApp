@@ -88,30 +88,11 @@ class Test(models.Model):
         verbose_name=_("Minimum Passing Score")
     )
     # Questa è una relazione "molti-a-molti". Un test può avere molte domande,
-    # e una domanda può essere in molti test. Usiamo una tabella intermedia
-    # esplicita (`QuestionInTest`) per poter definire anche l'ordine.
-    questions = models.ManyToManyField(Question, through='QuestionInTest', verbose_name=_("Quizzes in Test"))
+    # e una domanda può essere in molti test.
+    questions = models.ManyToManyField(Question, verbose_name=_("Quizzes in Test"))
     
     def __str__(self):
         return self.name
-
-class QuestionInTest(models.Model):
-    """
-    Tabella intermedia (through table) per la relazione Molti-a-Molti tra Test e Question.
-    Il suo scopo principale è memorizzare l'ordine delle domande all'interno di un test.
-    """
-    id_question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    id_test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    # Campo per definire l'ordine di visualizzazione delle domande.
-    order = models.PositiveIntegerField(default=0) 
-
-    class Meta:
-        # Assicura che una domanda non possa essere aggiunta due volte allo stesso test.
-        unique_together = ('id_question', 'id_test')
-        ordering = ['order'] # Ordina le domande in base al campo 'order'.
-
-    def __str__(self):
-        return f"{self.id_question.name} in {self.id_test.name}"
 
 
 # =============================================================================
