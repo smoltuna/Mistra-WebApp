@@ -61,6 +61,7 @@ input, textarea, select, button {
 }
 
 .header-top, .header-mistra {
+    min-height: 100px;
     background-color: #2b6ca3;
     color: white;
 }

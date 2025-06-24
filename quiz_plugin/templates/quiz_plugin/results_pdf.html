@@ -101,6 +101,7 @@
 
     {% for item in detailed_answers %}
         <div class="question-block">
+            {# Safe previene escaping di HTML #}
             <h4>Q{{ forloop.counter }}: {{ item.question_text|safe }}</h4>
             <p>
                 <strong>Your Answer:</strong> {{ item.given_answer_text|safe }}

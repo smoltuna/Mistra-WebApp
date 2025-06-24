@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
             quizDescriptionDisplay.innerHTML = data.test_description;
 
         } catch (error) {
-            // Se c'è un errore (es. rete assente), lo mostra nella console e all'utente.
+            // Se c'è un errore.
             console.error('Error loading random test details:', error);
             quizTitleDisplay.textContent = 'Errore nel caricamento del quiz.';
         }

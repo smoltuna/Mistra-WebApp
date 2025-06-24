@@ -128,7 +128,7 @@ class TestExecutionAdmin(admin.ModelAdmin):
     get_reviewed_by_full_name.short_description = _("Reviewed By") # Etichetta della colonna.
 
     def get_revision_date_display(self, obj):
-        """Formatta la data di revisione in un formato leggibile per l'Italia."""
+        """Formatta la data di revisione."""
         if obj.revision_date:
             return timezone.localtime(obj.revision_date).strftime('%d/%m/%Y %H:%M')
         return "N/A"
