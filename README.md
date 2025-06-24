@@ -45,9 +45,3 @@ Once the server is running, you can access the application by visiting `http://1
 
 ---
 
-
-## Report
-
-campo dottore su TestExecutions
-texto>text
-

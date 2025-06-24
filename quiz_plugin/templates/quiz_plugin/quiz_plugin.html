@@ -10,13 +10,13 @@
     <script src="{% static 'quiz_plugin/js/quiz.js' %}" defer></script>
 {% endaddtoblock %}
 
-{# Container principale, cattura la lingua #}
+{# Contenitore principale, cattura la lingua #}
 <div id="quiz-container" data-language-code="{{ LANGUAGE_CODE }}">
-    {# Placeholders for dynamically loaded test name and description #}
+    {# Segnaposto per il nome e la descrizione del test caricati dinamicamente #}
     <h2 id="quiz-title-display">Loading Quiz...</h2>
     <p id="quiz-description-display"></p>
 
-    {# Initial form to collect age and sex #}
+    {# Modulo iniziale per raccogliere età e sesso #}
     <form id="quiz-start-form">
         <label for="age">Età:</label>
         <input type="number" id="age" name="age" min="0" required>
@@ -28,7 +28,7 @@
         <button type="submit">Inizia Quiz</button>
     </form>
 
-    {# Container for displaying questions one by one #}
+    {# Contenitore per visualizzare le domande una per una #}
     <div id="quiz-questions" style="display:none;">
         <!-- Indicatore di progresso per le domande -->
         <div id="quiz-navigation-indicator"></div>
@@ -36,7 +36,7 @@
         <h3 id="question-number"></h3>
         <p id="question-text"></p>
         <div id="answer-options">
-            {# Viene caricato in modo dinamico dal js  #}
+            {# Viene caricato in modo dinamico dal js #}
         </div>
 
         <!-- Contenitore per i pulsanti di navigazione -->
@@ -49,7 +49,7 @@
         <button id="finish-quiz-btn" disabled>Finisci Quiz</button>
     </div>
 
-    {# Container for displaying quiz results after completion #}
+    {# Contenitore per visualizzare i risultati del quiz dopo il completamento #}
     <div id="quiz-results" style="display:none;">
         <h3>Risultati Quiz </h3>
         <p>Il tuo punteggio: <span id="final-score"></span></p>

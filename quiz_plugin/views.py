@@ -107,6 +107,7 @@ def get_random_test_questions(request, test_id):
 @require_POST
 @transaction.atomic
 def submit_results(request):
+    """"Ritorna il risultato finale del test completato"""
     try:
         data = json.loads(request.body)
         test_id = data.get('test_id')
