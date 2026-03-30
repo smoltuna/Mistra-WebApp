@@ -1,4 +1,5 @@
 import os  # isort:skip
+from decouple import Csv, config
 from django.utils.translation import gettext_lazy as _
 gettext = lambda s: s
 DATA_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -24,13 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&$gg*54jvct&7^7@dq^t&=240-34td%vxwi2)k2&!ffs^c(v*5'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Host/domini permessi a servire il sito. '*' permette a tutti (per sviluppo).
-ALLOWED_HOSTS = ['*']
+# Host/domini permessi a servire il sito.
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
 
 # URL principale del progetto.
@@ -122,7 +123,7 @@ TEMPLATES = [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader'
             ],
-            'debug': True
+            'debug': DEBUG
         },
     },
 ]

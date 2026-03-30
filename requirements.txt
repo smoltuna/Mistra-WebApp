@@ -20,3 +20,4 @@ django-mptt>0.9
 html5lib>=1.0.1
 Pillow>=3.0
 WeasyPrint
+python-decouple>=3.8
